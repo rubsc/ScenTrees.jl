@@ -37,21 +37,21 @@
         -         """
         -           This part addresses the critical probabilities of the tree so that we don't loose the branches
         -         """
-    40090         if !isempty(tmp) && !iszero(tmp)
-      176             probaNode = zero(probaNode)
-       90             probaNode[leaf] = probaLeaf
-       90             @inbounds for i = leaf
-     3690                 while newtree.parent[i] > 0
-     1230                     probaNode[newtree.parent[i]] = probaNode[newtree.parent[i]] + probaNode[i]
-     1230                     i = newtree.parent[i]
+    40039         if !isempty(tmp) && !iszero(tmp)
+       74             probaNode = zero(probaNode)
+       39             probaNode[leaf] = probaLeaf
+       39             @inbounds for i = leaf
+     1776                 while newtree.parent[i] > 0
+      592                     probaNode[newtree.parent[i]] = probaNode[newtree.parent[i]] + probaNode[i]
+      592                     i = newtree.parent[i]
         -                 end
         -             end
-       90             @inbounds for tmpi = tmp
-      182                 rt = path_to_leaves[tmpi]
+       39             @inbounds for tmpi = tmp
+      144                 rt = path_to_leaves[tmpi]
         -                 #rt = getindex(path_to_leaves,tmpi)
         -                 #tmpi = findall(pnt -> pnt <= critical, probaNode[rt])
-      182                 tmpi = Int64[ind for (ind,pnt) in enumerate(probaNode[rt]) if pnt <= critical]
-      182                 newtree.state[rt[tmpi],:] .= samplepath[tmpi,:]
+      144                 tmpi = Int64[ind for (ind,pnt) in enumerate(probaNode[rt]) if pnt <= critical]
+      144                 newtree.state[rt[tmpi],:] .= samplepath[tmpi,:]
         -             end
         -         end
         - 
@@ -66,7 +66,7 @@
    240000                 dist = norm(view(samplepath, 1:t) - view(newtree.state, path_to_all_nodes[i]), pNorm)
    240000                 if dist < disttemp
         -                     disttemp = dist
-   246867                     EndLeaf = i
+   250393                     EndLeaf = i
         -                 end
         -             end
         -         end
@@ -74,7 +74,7 @@
     40000         istar = Int64[idx for (idx,lf) in enumerate(leaf) if lf == EndLeaf]
     40000         probaLeaf[istar] .= probaLeaf[istar] .+ 1.0
     40000         StPath = path_to_leaves[EndLeaf-(leaf[1]-1)]          #counter 
-    40000         delta = newtree.state[StPath,:] - samplepath
+    80000         delta = newtree.state[StPath,:] - samplepath
     40000         d[:,istar] .= d[:,istar] .+ norm(delta, pNorm).^(rwasserstein)
     40000         delta .=  rwasserstein .* norm(delta, pNorm).^(rwasserstein - pNorm) .* abs.(delta)^(pNorm - 1) .* sign.(delta)
     40000         ak = 1.0 ./ (30.0 .+ probaLeaf[istar]) .^ 0.75
