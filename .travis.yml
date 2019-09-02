@@ -1,0 +1,51 @@
+# Documentation: http://docs.travis-ci.com/user/languages/julia/
+language: julia
+os:
+  - linux
+  - osx
+  
+julia:
+  - 1.0
+  - 1.1
+  - 1.2
+  - nightly
+  
+allow failures:
+  - julia: nightly
+  
+fast_finish: true
+
+branches:
+ only:
+   - master
+    
+codecov: true
+
+notifications:
+  email: false
+  
+env:
+ - PYTHON=""
+  
+# jobs:
+#     include:
+# 	- stage: "Documentation"
+script:
+#  - julia -e 'using Pkg; Pkg.clone(pwd())'
+  - julia -e 'using Pkg; Pkg.test("ScenTrees",coverage=true)'
+#  - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+#  - julia --project=docs/ -e 'using Pkg; Pkg.add("Documenter"); using Documenter; include("docs/make.jl")'
+      
+after_success:
+  - julia -e 'using Pkg; Pkg.add("Documenter")'
+  - julia --project=docs/ -e 'include("docs/make.jl")'
+  - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  on:
+    branch: master
