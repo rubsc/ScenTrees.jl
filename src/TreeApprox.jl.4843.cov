@@ -14,44 +14,44 @@
         - """
         - 
         - function TreeApproximation!(newtree::Tree,genPath::Function,samplesize::Int64,pNorm::Int64=2,rwasserstein::Int64=2)
-        8     leaf,omegas,probaLeaf = leaves(newtree)                      #leaves,omegas and probabilities of the leaves of the tree
-        4     dm = size(newtree.state,2)                                   #We get the dim from the dimsention of the states we are working on.
-        4     T = height(newtree)                                          #height of the tree
+       12     leaf,omegas,probaLeaf = leaves(newtree)                      #leaves,omegas and probabilities of the leaves of the tree
+        -     dm = size(newtree.state,2)                                   #We get the dim from the dimsention of the states we are working on.
+        -     T = height(newtree)                                          #height of the tree
         4     n = length(leaf)                                             #number of leaves = no of omegas
         4     d = zeros(Float64,dm,length(leaf))
         - 
-        4     samplepath = zeros(Float64,T+1,dm)
+        -     samplepath = zeros(Float64,T+1,dm)
         - 
         4     probaLeaf = zero(probaLeaf)
-        4     probaNode = nodes(newtree)                                  #all nodes of the tree
+        -     probaNode = nodes(newtree)                                  #all nodes of the tree
         - 
         4     path_to_leaves = [root(newtree,i) for i in leaf]            # all the paths from root to the leaves
         4     path_to_all_nodes = [root(newtree,j) for j in probaNode]    # all paths to other nodes
         - 
-        8     @inbounds for k = 1: samplesize
-    40000         critical = max(0.0,0.2*sqrt(k) - 0.1* n)
+        4     @inbounds for k = 1: samplesize
+    80000         critical = max(0.0,0.2*sqrt(k) - 0.1* n)
         -         #tmp = findall(xi -> xi <= critical, probaLeaf)
     40000         tmp = Int64[inx for (inx,ppf) in enumerate(probaLeaf) if ppf <= critical]
-    80000         samplepath .= genPath(T+1,dm)                          #sample path (nStages,nPaths) i.e a new scenario path
+    40000         samplepath .= genPath(T+1,dm)                          #sample path (nStages,nPaths) i.e a new scenario path
         - 
         -         """
         -           This part addresses the critical probabilities of the tree so that we don't loose the branches
         -         """
-    40049         if !isempty(tmp) && !iszero(tmp)
-       94             probaNode = zero(probaNode)
-       49             probaNode[leaf] = probaLeaf
-       49             @inbounds for i = leaf
-     2346                 while newtree.parent[i] > 0
-      782                     probaNode[newtree.parent[i]] = probaNode[newtree.parent[i]] + probaNode[i]
-      782                     i = newtree.parent[i]
+    80045         if !isempty(tmp) && !iszero(tmp)
+       90             probaNode = zero(probaNode)
+       45             probaNode[leaf] = probaLeaf
+       45             @inbounds for i = leaf
+     2100                 while newtree.parent[i] > 0
+     2100                     probaNode[newtree.parent[i]] = probaNode[newtree.parent[i]] + probaNode[i]
+      700                     i = newtree.parent[i]
         -                 end
         -             end
-       49             @inbounds for tmpi = tmp
-      171                 rt = path_to_leaves[tmpi]
+       45             @inbounds for tmpi = tmp
+      153                 rt = path_to_leaves[tmpi]
         -                 #rt = getindex(path_to_leaves,tmpi)
         -                 #tmpi = findall(pnt -> pnt <= critical, probaNode[rt])
-      171                 tmpi = Int64[ind for (ind,pnt) in enumerate(probaNode[rt]) if pnt <= critical]
-      171                 newtree.state[rt[tmpi],:] .= samplepath[tmpi,:]
+      153                 tmpi = Int64[ind for (ind,pnt) in enumerate(probaNode[rt]) if pnt <= critical]
+      612                 newtree.state[rt[tmpi],:] .= samplepath[tmpi,:]
         -             end
         -         end
         - 
@@ -59,14 +59,14 @@
         -                                     
     40000         EndLeaf = 0 #start from the root
         - 
-    80000         for t = 1:T+1
+    40000         for t = 1:T+1
    120000             tmpleaves = newtree.children[EndLeaf+1]
    120000             disttemp = Inf #or fill(Inf,dm)
    120000             for i = tmpleaves
    240000                 dist = norm(view(samplepath, 1:t) - view(newtree.state, path_to_all_nodes[i]), pNorm)
    240000                 if dist < disttemp
         -                     disttemp = dist
-   249818                     EndLeaf = i
+   285685                     EndLeaf = i
         -                 end
         -             end
         -         end
@@ -74,16 +74,16 @@
     40000         istar = Int64[idx for (idx,lf) in enumerate(leaf) if lf == EndLeaf]
     40000         probaLeaf[istar] .= probaLeaf[istar] .+ 1.0
     40000         StPath = path_to_leaves[EndLeaf-(leaf[1]-1)]          #counter 
-    40000         delta = newtree.state[StPath,:] - samplepath
-    40000         d[:,istar] .= d[:,istar] .+ norm(delta, pNorm).^(rwasserstein)
-    40000         delta .=  rwasserstein .* norm(delta, pNorm).^(rwasserstein - pNorm) .* abs.(delta)^(pNorm - 1) .* sign.(delta)
+    80000         delta = newtree.state[StPath,:] - samplepath
+   120000         d[:,istar] .= d[:,istar] .+ norm(delta, pNorm).^(rwasserstein)
+   120000         delta .=  rwasserstein .* norm(delta, pNorm).^(rwasserstein - pNorm) .* abs.(delta)^(pNorm - 1) .* sign.(delta)
     40000         ak = 1.0 ./ (30.0 .+ probaLeaf[istar]) .^ 0.75
-    79996         newtree.state[StPath,:] = newtree.state[StPath,:] - delta .* ak
+   160000         newtree.state[StPath,:] = newtree.state[StPath,:] - delta .* ak
         -     end
        56     probabilities  = map(plf -> plf/sum(probaLeaf), probaLeaf) #divide every element by the sum of all elements
-        4     transportationDistance = (d * hcat(probabilities) / samplesize) .^ (1/rwasserstein)
-        4     newtree.name = "Stochastic Approximation ,d=$(round.(transportationDistance,digits=5)),$(samplesize) scenarios"
-        8     newtree.probability .= buildProb!(newtree,hcat(probabilities)) #build the probabilities of this tree
+        8     transportationDistance = (d * hcat(probabilities) / samplesize) .^ (1/rwasserstein)
+        8     newtree.name = "Stochastic Approximation ,d=$(round.(transportationDistance,digits=5)),$(samplesize) scenarios"
+        4     newtree.probability .= buildProb!(newtree,hcat(probabilities)) #build the probabilities of this tree
         4     return newtree
         - end
         - 

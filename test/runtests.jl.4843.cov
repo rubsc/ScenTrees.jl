@@ -1,0 +1,29 @@
+        - using ScenTrees
+        - using Test
+        - 
+        - @testset "ScenTrees.jl" begin
+        2     @testset "ScenTrees.jl - Stochastic Approximation" begin
+        1         paths = [GaussianSamplePath,RunningMaximum]
+        1         trees = [Tree([1,2,2]),Tree([1,3,3])]
+        1         samplesize = 10000
+        1         pNorm = 2
+        1         rWasserstein = 2
+        - 
+        1         for path in paths
+        2             for newtree in trees
+        4                 TreeApproximation!(newtree,path,samplesize,pNorm,rWasserstein)
+        4                 @test length(newtree.parent) == length(newtree.state)
+        4                 @test length(newtree.parent) == length(newtree.probability)
+        4                 @test length(stage(newtree)) == length(newtree.parent)
+        4                 @test height(newtree) == maximum(stage(newtree))
+        -             end
+        -         end
+        -     end
+        - 
+        -     @testset "ScenTree.jl - Lattice Approximation" begin
+        1         tstLat = LatticeApproximation([1,2,3,4,5],500000)
+        1         @test length(tstLat.state) == length(tstLat.probability)
+        -         #@test sum.(tstLat.probability) .== 1.0
+        -     end
+        - end
+        - 

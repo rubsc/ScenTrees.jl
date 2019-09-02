@@ -24,9 +24,9 @@
         - So that instead of having it as a fucntion, we rather have it as an array so that we can only access the array
         - """
         -     function Children(parent::Vector{Int64})
-       12         allchildren = Vector{Vector{Int64}}([])
+        6         allchildren = Vector{Vector{Int64}}([])
         6         for node in unique(parent)
-       21             push!(allchildren,[i for i = 1:length(parent) if parent[i] == node])
+       30             push!(allchildren,[i for i = 1:length(parent) if parent[i] == node])
         -         end
         6         return allchildren
         -     end
@@ -117,28 +117,28 @@
         - """
         -     function Tree(spec::Vector{Int64}, dimension=Int64[])
         8         self = new()
-        2         if isempty(dimension)
+        4         if isempty(dimension)
         -             dimension = 1
         -         end
         2         leaves = spec
-        4         for stage = 1 : length(spec)
+        2         for stage = 1 : length(spec)
         6             if stage == 1
         -                 leaves = 1
-        2                 self.name = "Tree $(spec[1])"
-        2                 self.parent = zeros(Int64,spec[1])
+        -                 self.name = "Tree $(spec[1])"
+        -                 self.parent = zeros(Int64,spec[1])
         2                 self.children = Children(self.parent)
-        2                 self.state = randn(spec[1],dimension)
+        4                 self.state = randn(spec[1],dimension)
         2                 self.probability = ones(spec[1],1)
         -             else
-        4                 leaves = leaves * spec[stage-1]
-        7                 newleaves = vec(ones(Int64,spec[stage]) .* transpose(length(self.parent) .+ (1 .- leaves:0)))
+        8                 leaves = leaves * spec[stage-1]
+       16                 newleaves = vec(ones(Int64,spec[stage]) .* transpose(length(self.parent) .+ (1 .- leaves:0)))
         4                 self.parent =  vcat(self.parent, newleaves)
         4                 self.children = Children(self.parent)
-        4                 self.state = vcat(self.state,randn(length(newleaves),dimension))
-        4                 self.name = "$(self.name)x$(spec[stage])"
-        4                 tmp = rand(Uniform(0.3,1.0), spec[stage], leaves)
-        7                 tmp = tmp ./ (transpose(ones(1,spec[stage])) .* sum(tmp,dims=1))
-       14                 self.probability = vcat(self.probability,vec(tmp))
+        8                 self.state = vcat(self.state,randn(length(newleaves),dimension))
+        -                 self.name = "$(self.name)x$(spec[stage])"
+        8                 tmp = rand(Uniform(0.3,1.0), spec[stage], leaves)
+        -                 tmp = tmp ./ (transpose(ones(1,spec[stage])) .* sum(tmp,dims=1))
+       12                 self.probability = vcat(self.probability,vec(tmp))
         -             end
         -         end
         2         return self
@@ -150,18 +150,18 @@
         - """
         - 
         - function stage(trr::Tree,node = Int64[])
-       56     if isempty(node)
+       72     if isempty(node)
        16         node = 1 : length(trr.parent)
         -     elseif isa(node, Int64)
         -         node = Int64[node]
         -     end
         -     #stage = zeros(length(collect(node))) #you can also use this
-       16     stage = zero(node)
-       32     for i = 1:length(node)
-      160         pred = node[i]
-      408         while pred > 0 && trr.parent[pred] > 0
-      248             pred = trr.parent[pred]
-      392             stage[i] += 1
+       32     stage = zero(node)
+       48     for i = 1:length(node)
+      320         pred = node[i]
+     1224         while pred > 0 && trr.parent[pred] > 0
+        -             pred = trr.parent[pred]
+      408             stage[i] += 1
         -         end
         -     end
        16     return stage
@@ -172,7 +172,7 @@
         - which is just the maximum number of the stages of each node
         - """
         - function height(trr::Tree)
-       12     return maximum(stage(trr))
+       16     return maximum(stage(trr))
         - end
         - 
         - """
@@ -187,24 +187,24 @@
         -     #leaves are all nodes which are not parents
         -     #setdiff(A,B) finds all the elements that belongs to A and are not in B
         8     omegas = 1:length(leaves)
-        8     if !isempty(node) && isa(node,Int64)
+       16     if !isempty(node) && isa(node,Int64)
         0         node = Int64[node]
         -     end
-        8     if !isempty(node) && (0 ∉ node)
-        0         omegas = Set{Int64}()
-        -         nodes = leaves
+       16     if !isempty(node) && (0 ∉ node)
+        -         omegas = Set{Int64}()
+        0         nodes = leaves
         0         while any(j !=0 for j ∈ nodes)
         0             omegas = union(omegas,(ind for (ind,j) ∈ enumerate(nodes) if j ∈ node))
         0             nodes = Int64[trr.parent[max(0,j)] for j ∈ nodes]
         -         end
         0         omegas = collect(omegas)
         -     end
-       52     leaves = Int64[leaves[j] for j ∈ omegas]
-       16     prob = ones(Float64,length(leaves))
+       76     leaves = Int64[leaves[j] for j ∈ omegas]
+        8     prob = ones(Float64,length(leaves))
         -     nodes = leaves
        32     while any(j !=0 for j ∈ nodes)
-       24         prob = prob .* trr.probability[[j for j in nodes]]
-       24         nodes = Int64[trr.parent[max(0,j)] for j ∈ nodes]
+       48         prob = prob .* trr.probability[[j for j in nodes]]
+      360         nodes = Int64[trr.parent[max(0,j)] for j ∈ nodes]
         -     end
         8     return leaves,omegas, prob
         - end
@@ -213,7 +213,7 @@
         - This function gives the nodes in the tree, generally the range of the nodes in the tree
         - """
         - function nodes(trr::Tree, t = Int64[])
-       16     nodes = 1 : length(trr.parent)
+        8     nodes = 1 : length(trr.parent)
         8     if isempty(t) #if stage t is not given, return all nodes of the tree
         8         return nodes
         -     else # else return nodes at the given stage t
@@ -227,20 +227,20 @@
         - Else, it will give a sequence of nodes from the root to the indicated node.
         - """
         - function root(trr::Tree,nodes = Int64[])
-      132     if isempty(nodes)
+       66     if isempty(nodes)
         -         nodes = trr.children[1]
        66     elseif isa(nodes,Int64)
        66         nodes = Int64[nodes]
         -     end
-       66     root = 1 : length(trr.parent)
-       66     for i in nodes
-       66         iroot = Vector{Int64}([])
+      132     root = 1 : length(trr.parent)
+      132     for i in nodes
+        -         iroot = Vector{Int64}([])
         -         tmp = i
-      246         while tmp > 0
-      180             push!(iroot,tmp)
+      492         while tmp > 0
+        -             push!(iroot,tmp)
       180             tmp = trr.parent[tmp]
         -         end
-      132         root = Int64[i for i in reverse(iroot) if i in root]
+      198         root = Int64[i for i in reverse(iroot) if i in root]
         -     end
        66     return root
         - end
@@ -266,20 +266,20 @@
         - """
         - function buildProb!(trr::Tree,probabilities::Array{Float64,2})
         8     leaf,omegas,probaLeaf = leaves(trr)
-        4     if length(probabilities) == length(nodes(trr))
+       12     if length(probabilities) == length(nodes(trr))
         0         trr.probability .= probabilities
         -     else
-        4         probabilities .= max.(0.0,probabilities)
+        -         probabilities .= max.(0.0,probabilities)
        12         j = leaf;i = trr.parent[j];j .= j[i.> 0];i .= i[i .> 0]
-        8         trr.probability .= zeros(length(trr.state[:,1]),1)
+        -         trr.probability .= zeros(length(trr.state[:,1]),1)
         4         trr.probability[j] = probabilities
        24         while !isempty(i)
-        8             for k = 1:length(i)
-       36                 trr.probability[i[k]] = trr.probability[i[k]] + trr.probability[j[k]]
+       16             for k = 1:length(i)
+      108                 trr.probability[i[k]] = trr.probability[i[k]] + trr.probability[j[k]]
         -             end
-        8             trr.probability[j] .= trr.probability[j] ./ trr.probability[i]
-        8             trr.probability[isnan.(trr.probability)] .= 0.0
-    32778             j = unique(i); i = trr.parent[j]; j = j[i .> 0] ; i = i[i .> 0]
+       32             trr.probability[j] .= trr.probability[j] ./ trr.probability[i]
+        -             trr.probability[isnan.(trr.probability)] .= 0.0
+       32             j = unique(i); i = trr.parent[j]; j = j[i .> 0] ; i = i[i .> 0]
         -         end
         -     end
         4     return trr.probability
