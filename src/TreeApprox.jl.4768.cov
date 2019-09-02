@@ -37,21 +37,21 @@
         -         """
         -           This part addresses the critical probabilities of the tree so that we don't loose the branches
         -         """
-    40030         if !isempty(tmp) && !iszero(tmp)
-       56             probaNode = zero(probaNode)
-       30             probaNode[leaf] = probaLeaf
-       30             @inbounds for i = leaf
-     1350                 while newtree.parent[i] > 0
-      450                     probaNode[newtree.parent[i]] = probaNode[newtree.parent[i]] + probaNode[i]
-      480                     i = newtree.parent[i]
+    40090         if !isempty(tmp) && !iszero(tmp)
+      176             probaNode = zero(probaNode)
+       90             probaNode[leaf] = probaLeaf
+       90             @inbounds for i = leaf
+     3690                 while newtree.parent[i] > 0
+     1230                     probaNode[newtree.parent[i]] = probaNode[newtree.parent[i]] + probaNode[i]
+     1230                     i = newtree.parent[i]
         -                 end
         -             end
-       30             @inbounds for tmpi = tmp
-      125                 rt = path_to_leaves[tmpi]
+       90             @inbounds for tmpi = tmp
+      182                 rt = path_to_leaves[tmpi]
         -                 #rt = getindex(path_to_leaves,tmpi)
         -                 #tmpi = findall(pnt -> pnt <= critical, probaNode[rt])
-      125                 tmpi = Int64[ind for (ind,pnt) in enumerate(probaNode[rt]) if pnt <= critical]
-      155                 newtree.state[rt[tmpi],:] .= samplepath[tmpi,:]
+      182                 tmpi = Int64[ind for (ind,pnt) in enumerate(probaNode[rt]) if pnt <= critical]
+      182                 newtree.state[rt[tmpi],:] .= samplepath[tmpi,:]
         -             end
         -         end
         - 
@@ -66,7 +66,7 @@
    240000                 dist = norm(view(samplepath, 1:t) - view(newtree.state, path_to_all_nodes[i]), pNorm)
    240000                 if dist < disttemp
         -                     disttemp = dist
-   243223                     EndLeaf = i
+   246867                     EndLeaf = i
         -                 end
         -             end
         -         end
