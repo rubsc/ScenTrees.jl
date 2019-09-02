@@ -34,7 +34,7 @@
   2500000             sumLat = sum(LatProb[t],dims = 2)
   2500000             sqStates = 1.3 * sqrt(n) / states[t]
   2500000             tmp = Int64[id for (id,ls) in enumerate(sumLat) if ls < sqStates]
-  2500011             LatState[t][tmp] .= Z[t]                                                            #corrective action to include lost nodes
+  2500010             LatState[t][tmp] .= Z[t]                                                            #corrective action to include lost nodes
   7500000             mindist,indx = findmin(vec(abs.(LatState[t] .- Z[t])))                              #find the closest lattice entry
   2500000             dist = dist + mindist^2                                                             #Euclidean distance for the paths
   2500000             LatProb[t][idtm1,indx] = LatProb[t][idtm1,indx] .+ 1.0                              #increase the probability

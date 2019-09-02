@@ -131,13 +131,13 @@
         2                 self.probability = ones(spec[1],1)
         -             else
         4                 leaves = leaves * spec[stage-1]
-        8                 newleaves = vec(ones(Int64,spec[stage]) .* transpose(length(self.parent) .+ (1 .- leaves:0)))
+        7                 newleaves = vec(ones(Int64,spec[stage]) .* transpose(length(self.parent) .+ (1 .- leaves:0)))
         4                 self.parent =  vcat(self.parent, newleaves)
         4                 self.children = Children(self.parent)
         4                 self.state = vcat(self.state,randn(length(newleaves),dimension))
         4                 self.name = "$(self.name)x$(spec[stage])"
         4                 tmp = rand(Uniform(0.3,1.0), spec[stage], leaves)
-        8                 tmp = tmp ./ (transpose(ones(1,spec[stage])) .* sum(tmp,dims=1))
+        7                 tmp = tmp ./ (transpose(ones(1,spec[stage])) .* sum(tmp,dims=1))
        14                 self.probability = vcat(self.probability,vec(tmp))
         -             end
         -         end
@@ -172,7 +172,7 @@
         - which is just the maximum number of the stages of each node
         - """
         - function height(trr::Tree)
-       16     return maximum(stage(trr))
+       12     return maximum(stage(trr))
         - end
         - 
         - """
@@ -269,7 +269,7 @@
         4     if length(probabilities) == length(nodes(trr))
         0         trr.probability .= probabilities
         -     else
-        8         probabilities .= max.(0.0,probabilities)
+        4         probabilities .= max.(0.0,probabilities)
        12         j = leaf;i = trr.parent[j];j .= j[i.> 0];i .= i[i .> 0]
         8         trr.probability .= zeros(length(trr.state[:,1]),1)
         4         trr.probability[j] = probabilities
@@ -279,7 +279,7 @@
         -             end
         8             trr.probability[j] .= trr.probability[j] ./ trr.probability[i]
         8             trr.probability[isnan.(trr.probability)] .= 0.0
-       32             j = unique(i); i = trr.parent[j]; j = j[i .> 0] ; i = i[i .> 0]
+    32778             j = unique(i); i = trr.parent[j]; j = j[i .> 0] ; i = i[i .> 0]
         -         end
         -     end
         4     return trr.probability
