@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Stochastic processes · ScenTrees.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link href="../../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><a href="../../"><img class="logo" src="../../assets/logo.png" alt="ScenTrees.jl logo"/></a><h1>ScenTrees.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="../../search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../../">Home</a></li><li><span class="toctext">Tutorials</span><ul><li><a class="toctext" href="../tutorial1/">Introduction</a></li><li><a class="toctext" href="../tutorial2/">Scenario Trees</a></li><li><a class="toctext" href="../tutorial3/">Scenario Lattices</a></li><li><a class="toctext" href="../tutorial4/">Stochastic Approximation Process</a></li><li><a class="toctext" href="../tutorial5/">Performance of <code>ScenTrees.jl</code></a></li></ul></li></ul></nav><article id="docs"><header><nav><ul><li><a href>Stochastic processes</a></li></ul><a class="edit-page" href="https://github.com/kirui93/ScenTrees.jl/blob/master/docs/src/tutorial/tutorial31.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Stochastic processes</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Stochastic-processes-1" href="#Stochastic-processes-1">Stochastic processes</a></h1><p>A stochastic process is a sequence of events in which the outcome of any stage depends on some probability. A stochastic process is also called a random process.The stochastic process is said to be continuous, if i.e. with probability one, all of its trajectories are continuous functions in <code>t</code>.</p><p>There are many ways in which the stochastic processes can be classified. For example, they can be classified in terms of boundedness, continuity etc., i.e. properties of their sample trajectories. They could also be described with respect to the properties of their distribution functions. However, we find it important to classify the stpchastic processes according to their memory. We classify these processes as <code>discrete time stochastic processes</code> and <code>Markovian data processes</code>. The Markov processes are processes with short memory where the process has memory only at its immediate past. With this in mind, in our stochastic approximation process, we approximate a discrete time stochastic process with a <code>scenario tree</code> and a Markovian data process with a <code>scenario lattice</code>.  </p><h2><a class="nav-anchor" id="Stochastic-function-1" href="#Stochastic-function-1">Stochastic function</a></h2><p>This is a user-defined function representing the stochastic process in which she/he wants to approximate. This is the function that will generate trajectories that helps to improve the states of the nodes in the scenario tree or scenario lattice. To be able to do a good approximation, the user of this library should be aware of the number of stages in the scenario tree or scenario lattice that she/he is working on and more importantly, the dimension of the states of nodes in the tree or the scenario lattice. <code>Why is this important?</code> For each iteration, the stochastic approximation algorithm generates one trajectory from the stochastic function that will improve one path in the scenario tree. Therefore, knowing the number of stages and the dimension of the states will help the user to design a stochastic function that generates a trajectory with the same length as the number of stages in the scenario tree and with the same dimension as the dimension of the states in the scenario tree.</p><p>We have the following examples in our library:</p><pre><code class="language-none">1. Gaussian random walk,
+2. Running Maximum process
+3. Sample stock paths</code></pre><p>We have created the first two example functions in 1 and 2 dimensions. What we mean by dimension is that, a fucntion in 1 dimension generates just one array. Generally, a function in d-dimension generates <code>d</code> arrays. As stated before, the length of the array and the dimension of the array naturally depends on the characteristics of the scenario tree or scenario lattice that you are using.</p><p>The position <span>$X_t$</span> of a Gaussian random walk after <span>$t$</span> steps is <span>$X_t = \sum_{k=1}^{t} Y_k$</span> where the random variables <span>$(Y_k)_{k\geq 1}$</span> are independent and identically distributed and each <span>$Y_k$</span> follows a normal distribution. For the running maximum process, we take the maximum of each two consecutive numbers in a sample drawn from a normal distribution. Mathematically, <span>$M_t = \max \{\sum_{t=1}^{t^\prime} \xi_t : t^\prime \leq t\} \ \text{with} \ \xi_t \sim N(0,1)$</span>.</p><p>We insist that the user of this library <em>must write a function that takes no inputs</em>. This function should be, in a way, a hardcoded function that when you call, it produces an array with a certain user pre-determined characteristics.</p><p>The above two processes in our library are in 4 stages and therefore can be used with a scenario tree or a scenario lattice with 4 stages. As already stated, the stages in a scenario tree or a scenario lattice starts from <code>0</code> to <code>T</code>. Each of these processes generates samples with a common starting point since a stochastic process has a deterministic starting value and the rest of the values are random.</p><p>It is important to create a function that generates samples that are dependent on each other in <code>d</code> dimension. Most stochastic processes have states which depends on each other and so it is always important to consider dependency of the samples generated by the stochadtic function.</p><p>The following shows sample trajectories of our example functions above:</p><pre><code class="language-julia">julia&gt; GaussianSamplePath1D() # 4 stages, 1 dimension
+4x1 Array{Float64,2}:
+0.0
+-0.1566
+-1.5676
+-1.2084
+
+julia&gt; GaussianSamplePath1D() # 2nd run - same starting value, different other values (randomness)
+4x1 Array{Float64,2}:
+0.0
+-2.1779
+-2.4299
+-1.3796
+
+julia&gt; GaussianSamplePath2D() # 4 stages, 2 dimension
+4x2 Array{Float64,2}:
+1.0         0.0
+0.6968     -0.3676
+2.2257     -0.1558
+3.3988     -0.2629
+
+julia&gt; RunningMaximum1D()
+4x1 Array{Float64,2}:
+0.0
+0.0
+0.5574
+0.9278
+
+julia&gt; RunningMaximum2D()
+4x2 Array{Float64,2}:
+0.0         0.0
+2.7430      0.4331
+2.3931      0.4331
+-0.7218     0.3281
+
+julia&gt; path()
+4x1 Array{Float64,2}:
+100.0
+78.7084
+109.4443
+74.3815</code></pre><h3><a class="nav-anchor" id="Notes-1" href="#Notes-1">Notes</a></h3><pre><code class="language-none">1. The user of this library must provide this function. 
+2. The function must take no inputs. This is so important for the stochastic approximation algorithm.
+3. The length of an array produced by the function must be equal to the number of stages in the scenario tree or the scenario lattice.
+4. The dimension of the array produced must be the same as the dimension of the states of the scenario tree or scenario lattice.
+5. The array should have a common deterministic starting point or be in a certain range of values.
+6. The array produced should be a `Nxd Array{Float64,2}` where `N` is the number of stages and `d` is the dimension. This is important for the stochastic approximation process.
+7. In higher dimension, dpending on the user, the arrays could be dependent on each other.</code></pre><p>Upto this point, the user can now create a random scenario tree and look at its characteristics as well as write a process function that generates trajectories for the stochastic approximation process. It is important to write a function that follows the above criterion as this becomes very important in the stochastic approximation process.</p><p>Having looked on the scenario trees, scenario lattices and stochastic processes, we are now ready to have a look on the stochastic approximation process. This is in our next tutorial.</p><footer><hr/></footer></article></body></html>
