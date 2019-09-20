@@ -8,8 +8,8 @@ julia&gt; savefig(&quot;treeapprox1.png&quot;)</code></pre><p>The function <code
 0.0
 1.49765
 -0.17537
--1.2982</code></pre><p>The output for the above approximation, shown below, is a scenario tree that is stable and represents the stochastic process in the best possible way.</p><p><img src="../../assets/treeapprox1.png" alt="Example of a valuated tree in 1D"/></p><p>We can also appoximate a stochastic process in two dimension. Consider the Gaussian random walk in 2D. Our function <code>GaussianSamplePath2D</code> can generate samples from the Gaussian random walk in 2 dimension, for example as follows:</p><pre><code class="language-julia">julia&gt; GaussianSamplePath() # 4 stages, 2 dimension
-3x2 Array{Float64,2}
+-1.2982</code></pre><p>The output for the above approximation, shown below, is a scenario tree that is stable and represents the stochastic process in the best possible way.</p><p><img src="../../assets/treeapprox1.png" alt="Example of a valuated tree in 1D"/></p><p>We can also appoximate a stochastic process in two dimension. Consider the Gaussian random walk in 2D. Our function <code>GaussianSamplePath2D</code> can generate samples from the Gaussian random walk in 2 dimension, for example as follows:</p><pre><code class="language-julia">julia&gt; GaussianSamplePath2D() # 4 stages, 2 dimension
+4x2 Array{Float64,2}
 1.0000        0.0000
 0.76636      -0.44216
 3.65296      -0.14275
