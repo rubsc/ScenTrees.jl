@@ -10,6 +10,7 @@ julia:
   - 1.2
   - nightly
   
+<<<<<<< HEAD
 allow failures:
   - julia: nightly
   
@@ -19,12 +20,24 @@ branches:
  only:
    - master
     
+=======
+branches:
+ only:
+   - master
+   
+matrix:
+  fast_finish: true
+  allow_failures:
+    - julia: nightly
+   
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
 codecov: true
 
 notifications:
   email: false
   
 env:
+<<<<<<< HEAD
  - PYTHON=""
   
 # jobs:
@@ -49,3 +62,23 @@ deploy:
   keep_history: true
   on:
     branch: master
+=======
+  - PYTHON=""
+
+#script:
+#  - julia -e 'using Pkg; Pkg.test("ScenTrees",coverage=true)'
+
+jobs:
+  include:
+    - stage: "Documentation"
+      julia: 1.1
+      os: linux
+      script:
+        - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+        - julia --project=docs/ -e 'using Pkg; Pkg.add("Documenter"); using Documenter; include("docs/make.jl")'
+      after_success: skip
+       
+after_success:
+  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288

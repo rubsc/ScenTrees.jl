@@ -1,6 +1,10 @@
 site_name: ScenTrees.jl
 repo_url: https://github.com/kirui93/ScenTrees.jl
+<<<<<<< HEAD
 site_description: A package for generating scenario trees and scenario lattices for multistage stochastic optimization
+=======
+site_description: A Julia Library for Generating and Improving Scenario Trees and Scenario Lattices for Multistage Stochastic Optimization
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
 site_author: Kipngeno Kirui
 theme: readthedocs
 
@@ -17,9 +21,24 @@ extra_javascript:
 - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
 - assets/mathjaxhelper.js
 
+<<<<<<< HEAD
 docs_dir: 'src'
 
 pages:
 - Introduction: index.md
 - Tutorial: tutorial/tutorial1.md
+=======
+docs_dir: 'build' #from Julia's Documenter.jl
+
+pages:
+ - Home: index.md
+ - Tutorial:
+   - Title 1: tutorial/tutorial1.md
+   - Title 2: tutorial/tutorial2.md
+   - Title 3: tutorial/tutorial3.md
+   - Title 4: tutorial/tutorial31.md
+   - Title 5: tutorial/tutorial4.md
+   - Title 6: tutorial/tutorial41.md
+   - Title 7: tutorial/tutorial5.md
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
 
