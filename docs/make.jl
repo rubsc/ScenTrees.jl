@@ -49,6 +49,7 @@ deploydocs(deps = Deps.pip("mkdocs","python-markdown-math"),
 		]
 )
 
+<<<<<<< HEAD
 if !Sys.iswindows()
 	deploydocs(
 		deps = Deps.pip("mkdocs","python-markdown-math"),
@@ -58,3 +59,7 @@ if !Sys.iswindows()
 	)
 end
 >>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+
+deploydocs(repo = "github.com/kirui93/ScenTrees.jl.git")
+>>>>>>> master
