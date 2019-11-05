@@ -18,7 +18,7 @@ deploydocs(deps = Deps.pip("mkdocs","python-markdown-math"),
 )
 =======
 	clean = true,
-	doctest = false,
+	doctest = true,
 	format = Documenter.HTML(
 		assets = ["exampleTree1.png",
 		          "Tree402.png",
