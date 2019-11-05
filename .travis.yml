@@ -78,7 +78,13 @@ jobs:
         - julia --project=docs/ -e 'using Pkg; Pkg.add("Documenter"); using Documenter; include("docs/make.jl")'
       after_success: skip
        
+<<<<<<< HEAD
 after_success:
   - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
   - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
 >>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+# after_success:
+#   - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+#   - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+>>>>>>> master
