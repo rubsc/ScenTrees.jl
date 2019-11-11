@@ -94,6 +94,7 @@ end
 	PlotLattice(lt::Lattice)
 
 Returns a plot of a lattice. The arguments is only a lattice.
+<<<<<<< HEAD
 """
 
 <<<<<<< HEAD
@@ -119,9 +120,12 @@ function PlotLattice(lt::Lattice)
 #     xticks(0:length(lt.state)-1)
 # end
 					
+=======
+"""					
+>>>>>>> master
 function PlotLattice(lt::Lattice,fig = 1)
     if !isempty(fig)
-        figure(fig)
+        figure(figsize=(10,6))
     end
     lts = subplot2grid((1,4),(0,0),colspan = 3)
     title("states")

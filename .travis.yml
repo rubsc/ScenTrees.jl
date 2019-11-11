@@ -79,6 +79,7 @@ jobs:
       after_success: skip
        
 <<<<<<< HEAD
+<<<<<<< HEAD
 after_success:
   - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
   - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
@@ -87,4 +88,9 @@ after_success:
 # after_success:
 #   - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
 #   - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+>>>>>>> master
+=======
+after_success:
+  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
 >>>>>>> master
