@@ -1,5 +1,9 @@
 using Documenter, ScenTrees
 
+#const ASSETS = readdir(joinpath(@__DIR__, "src", "assets"))
+
+isCI = get(ENV, "CI", nothing) == "true" #Travis populates this env variable by default
+
 makedocs(
 	sitename =  "ScenTrees.jl",
 	authors = "Kipngeno Kirui",
@@ -19,23 +23,7 @@ deploydocs(deps = Deps.pip("mkdocs","python-markdown-math"),
 =======
 	clean = true,
 	doctest = true,
-	format = Documenter.HTML(
-		assets = ["exampleTree1.png",
-		          "Tree402.png",
-		          "Tree4022.png",
-			  "Tree40221.png",
-			  "Tree40222.png",
-			  "example1.png",
-			  "example21.png",
-			  "example22.png",
-		          "treeapprox1.png",
-		          "treeapprox2D.png",
-		          "ExampleLattice2.png",
-		          "LatticeApprox.png",
-			  "diffHeights.png",
-			  "KernLattice.png"
-		          ],
-		prettyurls = get(ENV, "CI", nothing) == "true"),
+	format = Documenter.HTML(prettyurls = isCI),		
 	pages = ["Home" => "index.md",
 		"Tutorials" => Any["tutorial/tutorial1.md",
 				    "tutorial/tutorial2.md",
@@ -44,11 +32,11 @@ deploydocs(deps = Deps.pip("mkdocs","python-markdown-math"),
 				    "tutorial/tutorial4.md",
 				    "tutorial/tutorial41.md",
 				    "tutorial/tutorial5.md"
-				]
-			                    
+				] 
 		]
 )
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 if !Sys.iswindows()
 	deploydocs(
@@ -62,4 +50,9 @@ end
 =======
 
 deploydocs(repo = "github.com/kirui93/ScenTrees.jl.git")
+>>>>>>> master
+=======
+if isCI
+    deploydocs(repo = "github.com/kirui93/ScenTrees.jl.git")
+end
 >>>>>>> master
