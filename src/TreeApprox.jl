@@ -1,9 +1,8 @@
-"""
-We start with a predefined tree. We already known the bushiness of the treee, number of stages in the tree, height of the tree,
-leaves in the tree, nodes of the tree e.t.c. The tree we start with is just random and is not good for stochastic approximation.
-Therefore, we take a path, either GaussianSamplePath or RunningMaximum and a number of scenarios and then try to improve this tree using the simulated path.
-The function Stochastic approximation tree takes a path, newtree, samplesize, pNorm and rwassertein.
-"""
+
+#We start with a predefined tree. We already known the bushiness of the treee, number of stages in the tree, height of the tree,
+#leaves in the tree, nodes of the tree e.t.c. The tree we start with is just random and is not good for stochastic approximation.
+#Therefore, we take a path, either GaussianSamplePath or RunningMaximum and a number of scenarios and then try to improve this tree using the simulated path.
+#The function Stochastic approximation tree takes a path, newtree, samplesize, pNorm and Wassertein parameter.
 
 using LinearAlgebra: norm, transpose
 
@@ -22,10 +21,10 @@ function TreeApproximation!(newtree::Tree,genPath::Function,samplesize::Int64,pN
 =======
 	TreeApproximation!(newtree::Tree,genPath::Function,samplesize::Int64,pNorm::Int64=2,rwasserstein::Int64=2)
 
-Returns a valuated probability scenario tree. Note that the inputs are in the following order: Tree(), path, sample size, 2,2.
+Returns a valuated probability scenario tree.
+Note that the inputs are in the following order: Tree(), path, number of iterations, d,r.
 The function `Tree()` takes the branching structure and the dimension of the tree.
 """
-
 function TreeApproximation!(newtree::Tree,genPath::Function,samplesize::Int64,pNorm::Int64=2,rwasserstein::Int64=2)
     leaf,omegas,probaLeaf = leaves(newtree)                               #leaves,omegas and probabilities of the leaves of the tree
     dm = size(newtree.state,2)                                            #We get the dim from the dimsention of the states we are working on.
@@ -33,7 +32,6 @@ function TreeApproximation!(newtree::Tree,genPath::Function,samplesize::Int64,pN
     n = length(leaf)                                                      #number of leaves = no of omegas
 >>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
     d = zeros(Float64,dm,length(leaf))
-
     samplepath = zeros(Float64,T+1,dm)
 
     probaLeaf = zero(probaLeaf)
@@ -57,6 +55,7 @@ function TreeApproximation!(newtree::Tree,genPath::Function,samplesize::Int64,pN
         samplepath .= genPath(T+1,dm)                          #sample path (nStages,nPaths) i.e a new scenario path
 =======
         samplepath .= genPath()                                           #sample path (nStages,nPaths) i.e a new scenario path
+<<<<<<< HEAD
 >>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
 
         """
@@ -66,6 +65,9 @@ function TreeApproximation!(newtree::Tree,genPath::Function,samplesize::Int64,pN
 =======
 
 >>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+        #The following part addresses the critical probabilities of the tree so that we don't loose the branches
+>>>>>>> master
         if !isempty(tmp) && !iszero(tmp)
             probaNode = zero(probaNode)
             probaNode[leaf] = probaLeaf
