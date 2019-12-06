@@ -453,6 +453,7 @@ function treeplot(trr::Tree, fig= 1)
     title("states")
     stg = stage(trr)
 <<<<<<< HEAD
+<<<<<<< HEAD
     xticks(range(1, stop = height(trr) + 1)) #Set the ticks on the x-axis
     xlabel("stage, time")
     trs.spines["top"].set_visible(false) #remove the box
@@ -463,6 +464,12 @@ function treeplot(trr::Tree, fig= 1)
     trs.spines["top"].set_visible(false)                                                       #remove the line of the box at the top
     trs.spines["right"].set_visible(false)		                                       # remove the line of the box at the right
 >>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+    xticks(1:height(trr)+1)         # Set the ticks on the x-axis
+    xlabel("stage, time",fontsize=12)
+    trs.spines["top"].set_visible(false)         # remove the line of the box at the top
+    trs.spines["right"].set_visible(false)		 # remove the line of the box at the right
+>>>>>>> master
     for i in range(1,stop = length(trr.parent))
         if stg[i] > 0
             trs.plot([stg[i]-1,stg[i]],[trr.state[trr.parent[i]],trr.state[i]])
@@ -485,8 +492,8 @@ function treeplot(trr::Tree, fig= 1)
     t = LinRange(minimum(Yi)-h, maximum(Yi)+h, 100) #100 points on probability plot
 =======
     h = 1.05*std(Yi)/ (nY^0.2) + 1e-3                                                           #Silverman rule of thumb
-    trs.set_ylim(minimum(Yi)-h, maximum(Yi)+h)
-    prs.set_ylim(minimum(Yi)-h, maximum(Yi)+h)
+    #trs.set_ylim(minimum(Yi)-h, maximum(Yi)+h)
+    #prs.set_ylim(minimum(Yi)-h, maximum(Yi)+h)
     yticks(())                                                                                                             #remove the ticks on probability plot
     t = LinRange(minimum(Yi)-h, maximum(Yi)+h, 100)                           #100 points on probability plot
 >>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288

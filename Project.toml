@@ -5,6 +5,7 @@ authors = ["Kipngeno Kirui <kipngenokirui1993@gmail.com>"]
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 version = "0.1.0"
 
 [deps]
@@ -22,6 +23,9 @@ version = "0.1.3"
 >>>>>>> master
 =======
 version = "0.1.4"
+>>>>>>> master
+=======
+version = "0.1.5"
 >>>>>>> master
 
 [deps]
