@@ -74,6 +74,7 @@ The following are some examples of predefined trees
     	Tree(identifier::Int64)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 This returns some examples of predefirned trees.
 These are (0,302,303,304,305,306,307,402,404,405).
 You can call any of the above tree and plot to see the properties of the tree.
@@ -81,6 +82,9 @@ You can call any of the above tree and plot to see the properties of the tree.
 """
 =======
     Returns some examples of predefirned trees.
+=======
+    Returns some examples of predefined trees.
+>>>>>>> master
     These are (0,302,303,304,305,306,307,402,404,405).
     You can call any of the above tree and plot to see the properties of the tree.
     """
@@ -185,9 +189,19 @@ We generate normal random  variables for the states of the nodes of the tree.
     	Tree(spec::Vector{Int64}, dimension=Int64[])
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
 =======
     Returns a tree according to the specified branching vector and the dimension. The branching vector must start with 1 for the root node.
+=======
+    Returns a tree according to the specified branching vector and the dimension.
+
+    Args:
+    spec - the branching structure of the scenario tree.
+    dimension - describes how many values (states) in each node.
+
+    The branching vector must start with 1 for the root node.
+>>>>>>> master
     """
 >>>>>>> master
     function Tree(spec::Vector{Int64}, dimension=Int64[])
@@ -230,6 +244,13 @@ end
 The stage function returns the stage of each node in the tree
 =======
 Returns the stage of each node in the tree.
+<<<<<<< HEAD
+>>>>>>> master
+=======
+
+Args:
+trr - an instance of a Tree.
+node - the number of node in the scenario tree you want to know its stage.
 >>>>>>> master
 """
 function stage(trr::Tree,node = Int64[])
@@ -258,7 +279,10 @@ which is just the maximum number of the stages of each node
 =======
 	height(trr::Tree)
 
-Returns the height of the tree which is just the maximum number of the stages of each node
+Returns the height of the tree which is just the maximum number of the stages of each node.
+
+Args:
+trr - an instance of a Tree.
 """
 <<<<<<< HEAD
 
@@ -280,6 +304,10 @@ The function also returns the indexes (omegas) of these nodes as well as the con
 	leaves(trr::Tree,node=Int64[])
 
 Returns the leaf nodes, their indexes and the conditional probabilities.
+
+Args:
+trr - an instance of a Tree.
+node - a node in the tree you want to its children.
 """
 <<<<<<< HEAD
 
@@ -322,6 +350,12 @@ This function gives the nodes in the tree, generally the range of the nodes in t
 	nodes(trr::Tree,t=Int64[])
 
 Returns the nodes in the tree, generally the range of the nodes in the tree.
+
+Args:
+trr - an instance of a Tree.
+t  - stage in the tree.
+
+Example : nodes(trr,2) - gives all nodes at stage 2.
 """
 <<<<<<< HEAD
 
@@ -347,8 +381,14 @@ Else, it will give a sequence of nodes from the root to the indicated node.
 
 """
 	root(trr::Tree,nodes=Int64[])
-Returns the starting node of the tree if the node is not specified.
-Else, returns the path from the root node to the specified node in th tree.
+Returns the root of the tree if the node is not specified.
+
+Args:
+trr - an instance of Tree.
+nodes - node in the tree you want to know the sequence from the root.
+
+If `nodes` is not specified, it returns the root of the tree.
+If `nodes` is specified, it returns a sequence of nodes from the root to the specified node.
 """
 <<<<<<< HEAD
 
@@ -386,6 +426,12 @@ states in higher dimension. So we can partition the tree into different trees wi
 different states. The following function helps us to do so.
 =======
 Returns a vector of trees in d-dimension.
+<<<<<<< HEAD
+>>>>>>> master
+=======
+
+Args:
+trr - an instance of Tree.
 >>>>>>> master
 """
 function partTree(trr::Tree)
@@ -404,11 +450,17 @@ In the stochastic approximation step, we only iterate over the probabilities of 
 	buildProb!(trr::Tree,probabilities::Array{Float64,2})
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 In the stochastic approximation step, we only iterate over the probabilities of the leaves. The length of the array of probabilities we get at the
 >>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
 end is smaller than the length of the parents. So we have to build the probabilites for the remaining nodes.
 =======
 Returns the probabilities of the nodes without probabilities if the array of probabilities is less than the length of parents in the stochastic approximation procedure.
+>>>>>>> master
+=======
+Returns the probabilities of the nodes without probabilities
+if the array of probabilities is less than the length of parents
+in the stochastic approximation procedure.
 >>>>>>> master
 """
 function buildProb!(trr::Tree,probabilities::Array{Float64,2})
@@ -437,7 +489,8 @@ end
 """
 	treeplot(trr::Tree,fig=1)
 
-Returns the plot of the input tree annotated with density of probabilities of reaching the leaf nodes in the tree.
+Returns the plot of the input tree annotated with density of
+probabilities of reaching the leaf nodes in the tree.
 """
 <<<<<<< HEAD
 
