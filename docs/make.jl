@@ -2,9 +2,8 @@ using Documenter, ScenTrees
 
 #const ASSETS = readdir(joinpath(@__DIR__, "src", "assets"))
 
-#isCI = get(ENV, "CI", nothing) == "true" #Travis populates this env variable by default
-
 makedocs(
+	modules = [ScenTrees],
 	sitename =  "ScenTrees.jl",
 	authors = "Kipngeno Kirui",
 <<<<<<< HEAD
@@ -23,9 +22,7 @@ deploydocs(deps = Deps.pip("mkdocs","python-markdown-math"),
 =======
 	clean = true,
 	doctest = false,
-	format = Documenter.HTML(
-			prettyurls = get(ENV, "CI", nothing) == "true"
-	),
+	format = Documenter.HTML(prettyurls = get(ENV, "CI", nothing) == "true"),
 	pages = ["Home" => "index.md",
 		"Tutorials" => Any["tutorial/tutorial1.md",
 				    "tutorial/tutorial2.md",
@@ -38,6 +35,7 @@ deploydocs(deps = Deps.pip("mkdocs","python-markdown-math"),
 		]
 )
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -61,9 +59,15 @@ end
 >>>>>>> master
 =======
 #if isCI
+=======
+>>>>>>> master
 deploydocs(
 	repo = "github.com/kirui93/ScenTrees.jl.git",
+	target = "build",
 	versions = ["stable" => "v^", "v#.#", "dev" => "master"]
 )
+<<<<<<< HEAD
 #end
+>>>>>>> master
+=======
 >>>>>>> master
