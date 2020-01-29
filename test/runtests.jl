@@ -54,11 +54,11 @@ using CSV, DataFrames, XLSX
         @test length(y.children) == 41
     end
     @testset "Sample stochastic functions" begin
-        a = GaussianSamplePath1D()
-        b = RunningMaximum1D()
+        a = gaussian_path1D()
+        b = running_maximum1D()
         c = path()
-        d = GaussianSamplePath2D()
-        e = RunningMaximum2D()
+        d = gaussian_path2D()
+        e = running_maximum2D()
         @test length(a) == 4
         @test length(b) == 4
         @test length(c) == 4
@@ -66,7 +66,7 @@ using CSV, DataFrames, XLSX
         @test size(e) == (4,2)
     end
     @testset "ScenTrees.jl - Tree Approximation 1D" begin
-        paths = [GaussianSamplePath1D,RunningMaximum1D]
+        paths = [gaussian_path1D,running_maximum1D]
         trees = [Tree([1,2,2,2]),Tree([1,3,3,3])]
         samplesize = 100000
 <<<<<<< HEAD
@@ -80,7 +80,7 @@ using CSV, DataFrames, XLSX
 
         for path in paths
             for newtree in trees
-                TreeApproximation!(newtree,path,samplesize,p,r)
+                tree_approximation!(newtree,path,samplesize,p,r)
                 @test length(newtree.parent) == length(newtree.state)
                 @test length(newtree.parent) == length(newtree.probability)
                 @test length(stage(newtree)) == length(newtree.parent)
@@ -101,13 +101,13 @@ using CSV, DataFrames, XLSX
         end
     end
     @testset "ScenTrees.jl - Tree Approximation 2D" begin
-        twoD= TreeApproximation!(Tree([1,3,3,3],2),GaussianSamplePath2D,100000,2,2)
+        twoD = tree_approximation!(Tree([1,3,3,3],2),gaussian_path2D,100000,2,2)
         @test size(twoD.state,2) == 2
         @test size(twoD.state,1) == length(twoD.parent) == length(twoD.probability)
     end
 
     @testset "ScenTree.jl - Lattice Approximation" begin
-        tstLat = LatticeApproximation([1,2,3,4],GaussianSamplePath1D,500000)
+        tstLat = lattice_approximation([1,2,3,4],gaussian_path1D,500000)
         @test length(tstLat.state) == length(tstLat.probability)
         @test round.(sum.(tstLat.probability), digits = 1)  == [1.0, 1.0, 1.0, 1.0] #sum of probs at every stage
     end
@@ -141,7 +141,7 @@ using CSV, DataFrames, XLSX
         @test (sd1 .< 5) == Bool[true, true, true, true, true]
         @test (sd2 .< 10) == Bool[true, true, true, true, true, true, true]
 
-        LatFromKernel = LatticeApproximation([1,3,4,5,6],KernelScenarios(RWData),100000)
+        LatFromKernel = lattice_approximation([1,3,4,5,6],kernel_scenarios(RWData),100000)
         @test round.(sum.(LatFromKernel.probability),digits=1) == [1.0, 1.0, 1.0, 1.0, 1.0]
         @test length(LatFromKernel.state) == length(LatFromKernel.probability)
 >>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288

@@ -12,6 +12,7 @@ end
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	LatticeApproximation()
 
 Returns a valuated scanario lattice. It takes as inputs a vector of branching structure and the sample size.
@@ -58,6 +59,9 @@ end
 =======
 	LatticeApproximation(bstructure::Array{Int64,1}, path::Function, nIterations::Int64, r::Int64 = 2)
 >>>>>>> master
+=======
+	lattice_approximation(bstructure::Array{Int64,1}, path::Function, nIterations::Int64, r::Int64 = 2)
+>>>>>>> master
 
 Returns an approximated lattice approximating the stochastic process provided.
 
@@ -67,7 +71,7 @@ path - function generating samples from known distribution with length equal to 
 nIterations - number of iterations for stochastic approximation algorithm.
 r - parameter for the transportation distance.
 """
-function LatticeApproximation(bstructure::Array{Int64,1}, path::Function, nIterations::Int64, r::Int64 = 2)
+function lattice_approximation(bstructure::Array{Int64,1}, path::Function, nIterations::Int64, r::Int64 = 2)
     t_dist = 0.0                               # multistage distance
     T = length(bstructure)     # number of stages in the scenario lattice
     states = [zeros(bstructure[j], 1) for j = 1 : T]   # States of the lattice at each time t
@@ -133,8 +137,12 @@ function PlotLattice(lt::Lattice)
 =======
 Returns a plot of a lattice.
 """
+<<<<<<< HEAD
 >>>>>>> master
 function PlotLattice(lt::Lattice,fig = 1)
+=======
+function plot_lattice(lt::Lattice,fig = 1)
+>>>>>>> master
     if !isempty(fig)
         figure(figsize=(6,4))
     end

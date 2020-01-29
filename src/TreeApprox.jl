@@ -6,6 +6,7 @@ using LinearAlgebra: norm, transpose
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	TreeApproximation!()
 Returns a valuated probability scenario tree. Note that the inputs are in the following order: Tree(), path, sample size, 2,2
 
@@ -27,6 +28,9 @@ function TreeApproximation!(newtree::Tree,genPath::Function,samplesize::Int64,pN
 =======
 	TreeApproximation!(newtree::Tree, path::Function, nIterations::Int64, p::Int64=2, r::Int64=2)
 >>>>>>> master
+=======
+	tree_approximation!(newtree::Tree, path::Function, nIterations::Int64, p::Int64=2, r::Int64=2)
+>>>>>>> master
 
 Returns a valuated probability scenario tree approximating the input stochastic process.
 
@@ -37,6 +41,7 @@ nIterations - number of iterations for stochastic approximation procedure,
 p - choice of norm (default p = 2 (Euclidean distance)), and,
 r - transportation distance parameter
 """
+<<<<<<< HEAD
 <<<<<<< HEAD
 function TreeApproximation!(newtree::Tree,genPath::Function,nIterations::Int64,p::Int64=2,r::Int64=2)
     leaf,omegas,probaLeaf = leaves(newtree)                               #leaves,omegas and probabilities of the leaves of the tree
@@ -87,6 +92,9 @@ function TreeApproximation!(newtree::Tree,genPath::Function,nIterations::Int64,p
 >>>>>>> master
 =======
 function TreeApproximation!(newtree::Tree, path::Function, nIterations::Int64, p::Int64=2, r::Int64=2)
+=======
+function tree_approximation!(newtree::Tree, path::Function, nIterations::Int64, p::Int64=2, r::Int64=2)
+>>>>>>> master
     leaf, omegas, probaLeaf = leaves(newtree)      # leaves, indexes and probabilities of the leaves of the tree
     dm = size(newtree.state, 2)                    # dm = dimension of the states of the nodes of the tree.
     T = height(newtree)                            # height of the tree = number of stages - 1
@@ -202,6 +210,6 @@ function TreeApproximation!(newtree::Tree, path::Function, nIterations::Int64, p
     probabilities  = map(plf -> plf / sum(probaLeaf), probaLeaf) #divide every element by the sum of all elements
     t_dist = (d * hcat(probabilities) / nIterations) .^ (1 / r)
     newtree.name = "$(newtree.name) with d=$(t_dist) at $(nIterations) iterations"
-    newtree.probability .= buildProb!(newtree, hcat(probabilities)) #build the probabilities of this tree
+    newtree.probability .= build_probabilities!(newtree, hcat(probabilities)) #build the probabilities of this tree
     return newtree
 end
