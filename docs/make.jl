@@ -3,7 +3,6 @@ using Documenter, ScenTrees
 #const ASSETS = readdir(joinpath(@__DIR__, "src", "assets"))
 
 makedocs(
-	modules = [ScenTrees],
 	sitename =  "ScenTrees.jl",
 	authors = "Kipngeno Kirui",
 <<<<<<< HEAD
@@ -64,7 +63,9 @@ end
 deploydocs(
 	repo = "github.com/kirui93/ScenTrees.jl.git",
 	target = "build",
-	versions = ["stable" => "v^", "v#.#", "dev" => "master"]
+	deps = nothing,
+	make = nothing
+	#versions = ["stable" => "v^", "v#.#", "dev" => "master"]
 )
 <<<<<<< HEAD
 #end
