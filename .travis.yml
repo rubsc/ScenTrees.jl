@@ -2,13 +2,17 @@
 language: julia
 os:
   - linux
-  - osx
+#  - osx
   
 julia:
   - 1.0
   - 1.1
   - 1.2
+  - 1.3
   - nightly
+
+after_success:
+  - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder()); Coveralls.submit(process_folder())'
   
 <<<<<<< HEAD
 allow failures:
@@ -24,6 +28,7 @@ branches:
 branches:
  only:
    - master
+<<<<<<< HEAD
    
 matrix:
   fast_finish: true
@@ -32,6 +37,11 @@ matrix:
    
 >>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
 codecov: true
+=======
+   - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+ 
+#codecov: true
+>>>>>>> master
 
 notifications:
   email: false
@@ -65,19 +75,21 @@ deploy:
 =======
   - PYTHON=""
 
-#script:
-#  - julia -e 'using Pkg; Pkg.test("ScenTrees",coverage=true)'
 
 jobs:
+  fast_finish: true
+  allow_failures:
+    - julia: nightly
   include:
     - stage: "Documentation"
-      julia: 1.1
+      julia: 1.0
       os: linux
       script:
         - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
         - julia --project=docs/ -e 'using Pkg; Pkg.add("Documenter"); using Documenter; include("docs/make.jl")'
       after_success: skip
        
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 after_success:
@@ -93,4 +105,9 @@ after_success:
 after_success:
   - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
   - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+>>>>>>> master
+=======
+#after_success:
+#  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+#  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
 >>>>>>> master
