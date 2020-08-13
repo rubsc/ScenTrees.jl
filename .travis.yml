@@ -2,13 +2,10 @@
 language: julia
 os:
   - linux
-#  - osx
   
 julia:
   - 1.0
-  - 1.1
-  - 1.2
-  - 1.3
+  - 1.4
   - nightly
 
 after_success:
@@ -23,6 +20,7 @@ fast_finish: true
 branches:
  only:
    - master
+<<<<<<< HEAD
     
 =======
 branches:
@@ -43,9 +41,12 @@ codecov: true
 #codecov: true
 >>>>>>> master
 
+=======
+codecov: true
+coveralls: true
+>>>>>>> master
 notifications:
-  email: false
-  
+  email: false  
 env:
 <<<<<<< HEAD
  - PYTHON=""
@@ -74,8 +75,6 @@ deploy:
     branch: master
 =======
   - PYTHON=""
-
-
 jobs:
   fast_finish: true
   allow_failures:
@@ -88,6 +87,7 @@ jobs:
         - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
         - julia --project=docs/ -e 'using Pkg; Pkg.add("Documenter"); using Documenter; include("docs/make.jl")'
       after_success: skip
+<<<<<<< HEAD
        
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -110,4 +110,8 @@ after_success:
 #after_success:
 #  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
 #  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+>>>>>>> master
+=======
+      
+      
 >>>>>>> master
