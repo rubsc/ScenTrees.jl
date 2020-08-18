@@ -12,7 +12,7 @@ using Statistics: std
 using CSV, DataFrames, XLSX
 
 @testset "ScenTrees.jl" begin
-    @testset "Predefined tree- Tree 402" begin
+    @testset "Predefined tree - Tree 402" begin
         a = Tree(402)
         @test typeof(a) == Tree
         @test length(a.parent) == 15
@@ -106,13 +106,21 @@ using CSV, DataFrames, XLSX
         @test size(twoD.state,1) == length(twoD.parent) == length(twoD.probability)
     end
 
-    @testset "ScenTree.jl - Lattice Approximation" begin
-        tstLat = lattice_approximation([1,2,3,4],gaussian_path1D,500000)
+    @testset "ScenTrees.jl - Lattice Approximation" begin
+        tstLat = lattice_approximation([1,2,3,4],gaussian_path1D,500000,2,1)
         @test length(tstLat.state) == length(tstLat.probability)
         @test round.(sum.(tstLat.probability), digits = 1)  == [1.0, 1.0, 1.0, 1.0] #sum of probs at every stage
     end
+
+    @testset "ScenTrees.jl - Lattice Approximation 2D" begin
+        lat2 = lattice_approximation([1,2,3,4],gaussian_path2D,500000,2,2)
+        @test length(lat2) == 2 # resultant lattices are 2
+        @test length(lat2[1].state) == length(lat2[1].probability)
+        @test round.(sum.(lat2[1].probability), digits = 1)  == [1.0, 1.0, 1.0, 1.0]
+        @test round.(sum.(lat2[2].probability), digits = 1)  == [1.0, 1.0, 1.0, 1.0]
+    end
     @testset "ScenTrees.jl - Test Example Data" begin
-        data = CSV.read("data5.csv")
+        data = CSV.read("data5.csv",DataFrame) # check the new way of loading data
         gsData = Matrix(data)
         df = DataFrame(XLSX.readtable("Mappe1.xlsx", "Sheet1")...)
         df1 = Matrix(df)
@@ -120,7 +128,7 @@ using CSV, DataFrames, XLSX
         df2 = DataFrame(XLSX.readtable("Mappe1.xlsx", "Sheet2")...)
         df22 = Matrix(df2)
         df22 = convert(Array{Float64,2},df22)
-        RandomWalkData = CSV.read("RandomDataWalk.csv")
+        RandomWalkData = CSV.read("RandomDataWalk.csv",DataFrame)
         RWData = Matrix(RandomWalkData)
 
         @test size(gsData) ==(100,10)
@@ -131,7 +139,7 @@ using CSV, DataFrames, XLSX
         sd1 = zeros(5)
         sd2 = zeros(7)
 
-        for t = 1:size(RWData,2)
+        for t = 1 : size(RWData,2)
             sd1[t] = std(RWData[:,t])
         end
 
@@ -141,7 +149,7 @@ using CSV, DataFrames, XLSX
         @test (sd1 .< 5) == Bool[true, true, true, true, true]
         @test (sd2 .< 10) == Bool[true, true, true, true, true, true, true]
 
-        LatFromKernel = lattice_approximation([1,3,4,5,6],kernel_scenarios(RWData),100000)
+        LatFromKernel = lattice_approximation([1,3,4,5,6],kernel_scenarios(RWData),100000,2,1)
         @test round.(sum.(LatFromKernel.probability),digits=1) == [1.0, 1.0, 1.0, 1.0, 1.0]
         @test length(LatFromKernel.state) == length(LatFromKernel.probability)
 >>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
