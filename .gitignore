@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 *.DS_Store
 Manifest.toml
 docs/build/
 docs/site/
 *.cov
 *.mem
+=======
+#*.jl.*.cov
+#*.jl.cov
+#*.jl.mem
+*.DS_Store
+Manifest.toml
+docs/build/
+>>>>>>> Deploy kirui93/ScenTrees.jl to github.com/kirui93/ScenTrees.jl.git:gh-pages

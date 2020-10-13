@@ -1,6 +1,7 @@
 name = "ScenTrees"
 uuid = "4ec4db44-c288-11e9-3202-272e944f779a"
 authors = ["Kipngeno Kirui <kipngenokirui1993@gmail.com>"]
+<<<<<<< HEAD
 version = "0.3.1"
 
 [deps]
@@ -21,6 +22,26 @@ DataFrames = "0.21"
 PyPlot = "2.9.0"
 CSV = "0.7"
 XLSX = "0.7"
+=======
+version = "0.1.0"
+
+[deps]
+Coverage = "a2441757-f6aa-5fb2-8edb-039e3f45d037"
+Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+SharedArrays = "1a1011a3-84de-559e-8e89-a11a2f7dc383"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[compat]
+julia = "1"
+>>>>>>> Deploy kirui93/ScenTrees.jl to github.com/kirui93/ScenTrees.jl.git:gh-pages
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
