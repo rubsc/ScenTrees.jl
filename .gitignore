@@ -2,9 +2,15 @@
 *.DS_Store
 Manifest.toml
 docs/build/
+<<<<<<< HEAD
+=======
 docs/site/
+<<<<<<< HEAD
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
 *.cov
 *.mem
+<<<<<<< HEAD
 =======
 #*.jl.*.cov
 #*.jl.cov
@@ -13,3 +19,6 @@ docs/site/
 Manifest.toml
 docs/build/
 >>>>>>> Deploy kirui93/ScenTrees.jl to github.com/kirui93/ScenTrees.jl.git:gh-pages
+=======
+>>>>>>> master
+>>>>>>> gh-pages

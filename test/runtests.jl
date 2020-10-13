@@ -1,5 +1,13 @@
 using ScenTrees
 using Test
+<<<<<<< HEAD
+
+@testset "ScenTrees.jl" begin
+    @testset "ScenTrees.jl - Stochastic Approximation" begin
+        paths = [GaussianSamplePath,RunningMaximum]
+        trees = [Tree([1,2,2]),Tree([1,3,3])]
+        samplesize = 10000
+=======
 using Statistics: std
 using CSV, DataFrames, XLSX
 
@@ -61,8 +69,14 @@ using CSV, DataFrames, XLSX
         paths = [gaussian_path1D,running_maximum1D]
         trees = [Tree([1,2,2,2]),Tree([1,3,3,3])]
         samplesize = 100000
+<<<<<<< HEAD
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+        pNorm = 2
+        rWasserstein = 2
+=======
         p = 2
         r = 2
+>>>>>>> master
 
         for path in paths
             for newtree in trees
@@ -71,6 +85,16 @@ using CSV, DataFrames, XLSX
                 @test length(newtree.parent) == length(newtree.probability)
                 @test length(stage(newtree)) == length(newtree.parent)
                 @test height(newtree) == maximum(stage(newtree))
+<<<<<<< HEAD
+            end
+        end
+    end
+
+    @testset "ScenTree.jl - Lattice Approximation" begin
+        tstLat = LatticeApproximation([1,2,3,4,5],500000)
+        @test length(tstLat.state) == length(tstLat.probability)
+        #@test sum.(tstLat.probability) .== 1.0
+=======
                 @test round(sum(leaves(newtree)[3]),digits=1) == 1.0   #sum of unconditional probabilities of the leaves
                 @test length(root(newtree)) == 1
             end
@@ -128,5 +152,6 @@ using CSV, DataFrames, XLSX
         LatFromKernel = lattice_approximation([1,3,4,5,6],kernel_scenarios(RWData),100000,2,1)
         @test round.(sum.(LatFromKernel.probability),digits=1) == [1.0, 1.0, 1.0, 1.0, 1.0]
         @test length(LatFromKernel.state) == length(LatFromKernel.probability)
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
     end
 end

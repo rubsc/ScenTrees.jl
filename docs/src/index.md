@@ -4,7 +4,44 @@ CurrentModule = ScenTrees
 
 # ScenTrees.jl
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+!!! info
+<<<<<<< HEAD
+<<<<<<< HEAD
+	`ScenTrees.jl` is still under development.
+
+`ScenTrees.jl` is a package for generating and improving scenario trees and scenario lattices for multistage stochastic optimization using _stochastic approximation_.
+In this explanation, we assume that the reader is quite familiar with the theory and explanation in the paper _Dynamic Genaration of Scenario Trees by Pflug and Pichler_.
+
+!!! tip 
+	If you haven't, you don't have to worry. Here is the link:
+	[Dynamic Generation of Scenario Trees](https://link.springer.com/article/10.1007/s10589-015-9758-0)
+
+## Installation
+
+You can install `ScenTrees.jl` as follows:
+
+```julia
+]
+add https://github.com/kirui93/ScenTrees.jl.git
+```
+
+## Citing `ScenTrees.jl`
+
+=======
+	**`ScenTrees.jl` is an actively developed library and new features and improvements are continually added.**
+	
+## Main features of the library
+=======
+	`ScenTrees.jl` is an actively developed package and new features and improvements are continually added.
+>>>>>>> master
+=======
+We present `Scentrees.jl` package for generating and improving scenario trees and scenario lattices for multistage stochastic optimization problems using stochastic optimization.
+>>>>>>> master
+=======
 We present `ScenTrees.jl` package for generating and improving scenario trees and scenario lattices for multistage stochastic optimization problems using stochastic optimization.
+>>>>>>> master
 
 ## Main features of the package
 
@@ -38,4 +75,28 @@ The following are the most important functions that ScenTrees.jl package provide
 
 4. `Scenario lattice approximation`: It is used to approximate Markovian processes. As already indicated, scenario lattices are natural discretization of Markov processes. The function `lattice_approximation([bstructure], path, nIterations, r = 2, dim = 1)` takes: the branching structure of the lattice, function generating trajectories from a stochastic process, the number of iterations, multistage distance parameter `r` (default `r = 2`) and the dimension `dim` which you are working on . The scenario lattice approximation follows the the same procedure as scenario tree approximation but here we find the closest lattice entry and use samples from the process function to improve it.
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+5. `Generation of scenarios from data`: This is a non-parametric technique for generating samples from a give limited data with unknown distribution. We use this process to generate new but different samples based of the data given using the kernel density estimation technique. The new samples can then be used to generate scenario trees and scenario lattices. The function `KernelScenarios(data,KernelDistribution = Logistic;Markovian=true)` takes:
+
+	* A data matrix in 2 dimension (i.e., `NxT` matrix where `N` is the number of trajectories and `T` is the number of stages.
+	* Kernel Distribution is the distribution that you want to use for the kernels. The default distribution is `Logistic distribution`. The user is free to choose any distribution he/she wishes to use based on the package `Distributions.jl`.
+	* The wrapper we use here states whether the trajectories that you want to create are either Markovian or not. When you set `Markovian=true`, the trajectories here are Markovian and so can be used to approximate a scenario lattice. Similarly, if you set `Markovian=false`, the trajectories are non-Markovian and therefore can be used to generate scenario trees.
+<<<<<<< HEAD
+
+
+## Citing `ScenTrees.jl`
+
+For all the users of this package, we request that you cite the following paper:
+
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+!!! info
+    To be added.
+=======
+>>>>>>> master
+=======
+5. `Generation of scenarios from data`: This is a non-parametric technique for generating samples from a given limited data with unknown distribution. We use this process to generate new but different samples based of the data given using the conditional density estimation techniques. The new samples can then be used to generate scenario trees and scenario lattices. The function `KernelScenarios(data, KernelDistribution = Logistic; Markovian = true)` takes: 1. A limited two dimensional data (i.e., `N x T` matrix where `N` is the number of trajectories and `T` is the number of stages, 2. Kernel Distribution is the distribution that you want to use for the kernels. The default distribution is `Logistic distribution`. The user is free to choose any distribution he/she wishes from the package `Distributions.jl`, and, 3. an optional keyword to determine whether the trajectories generated are Markovian or not. When you set `Markovian = true`, the trajectories here are Markovian and are used to approximate a scenario lattice. Similarly, if you set `Markovian = false`, the trajectories are non-Markovian and are to generate scenario trees.
+>>>>>>> master
+=======
 5. `Generation of scenarios from data`: This is a non-parametric technique for generating samples from a given limited data with unknown distribution. We use this process to generate new but different samples based of the data given using the conditional density estimation techniques. The new samples can then be used to generate scenario trees and scenario lattices. The function `kernel_scenarios(data, KernelDistribution = Logistic; Markovian = true)` takes: 1. A limited two dimensional data (i.e., `N x T` matrix where `N` is the number of trajectories and `T` is the number of stages, 2. Kernel Distribution is the distribution that you want to use for the kernels. The default distribution is `Logistic distribution`. The user is free to choose any distribution he/she wishes from the package `Distributions.jl`, and, 3. an optional keyword to determine whether the trajectories generated are Markovian or not. When you set `Markovian = true`, the trajectories here are Markovian and are used to approximate a scenario lattice. Similarly, if you set `Markovian = false`, the trajectories are non-Markovian and are to generate scenario trees.
+>>>>>>> master

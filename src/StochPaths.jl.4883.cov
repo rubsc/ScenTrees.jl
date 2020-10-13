@@ -1,0 +1,38 @@
+        - """
+        - The stochastic approximation process takes a simulated scenario path and updates the tree.
+        - We have two functions, GaussianSamplePath and RunningMaximum which helps us to generate normally distributed random variables.
+        - Each of them can generate random variables upto the d dimension.
+        - nStages - the number of stages in the tree we want to improve.
+        - nPaths - number of paths we want to generate, defaulted to 1.
+        - d - dimension that we are working on; only possible for 1 and 2D, for now.
+        - """
+        - 
+        - function GaussianSamplePath(nStages::Int64,d::Int64)
+    40000     if d == 1
+    20000         return vcat(0.0,cumsum(randn(nStages-1,d),dims = 1))
+        -     else
+        0         gsmatrix = randn(nStages,d) * [1.0 0.0; 0.9 0.3] #will create an (dimension x nstages) matrix
+        0         gsmatrix[1,:] .= 0.0
+        0         return cumsum(gsmatrix .+ [1.0 0.0], dims = 1)
+        -     end
+        - end
+        - 
+        - function RunningMaximum(nStages::Int64,d::Int64)
+    40000     rmatrix = vcat(0.0,cumsum(randn(nStages-1,1),dims = 1))
+    20000     if d == 1
+    40000         for i = 2:nStages
+    60000             rmatrix[i] = max(rmatrix[i-1], rmatrix[i])
+        -         end
+    20000         return rmatrix
+        -     else
+        0         rmatrix2D = zeros(nStages,d)
+        0         rmatrix2D[:,1] = rmatrix
+        0         for j=2:d
+        0             for i=2:nStages
+        0                 rmatrix2D[i,j] = max(rmatrix[i-1],rmatrix[i])
+        -             end
+        -         end
+        0         return rmatrix2D
+        -     end    
+        - end
+        - 

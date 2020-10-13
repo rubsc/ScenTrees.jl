@@ -1,3 +1,22 @@
+<<<<<<< HEAD
+# Introduction
+
+Multistage stochastic optimization involves approximating a stochastic process in by a finite structure.
+We call these structures a scenario tree and a scanrio lattice.
+Scenario lattices plays an important role in approximating Markovian data processes.
+
+We will look at the basic functionality of `ScenTrees.jl` just to highlight on how it works.
+
+## Goal
+
+The goal is to generate a valuated probability tree or a lattice which represents the stochastic process in the best way possible.
+
+To measure the quality of the approximation, we use a process distance between the stochastic process and the scanario tree or lattice.
+
+## Description of a scenario tree
+
+A scenario tree is characterized by the following:
+=======
 ```@meta
 CurrentModule = ScenTrees
 ```
@@ -49,6 +68,7 @@ The distance between the above scenario tree and the original process is `0.0894
 ## Description of a scenario tree
 
 A scenario tree is described by the following:
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
 
 1. Name of the tree
 2. Parents of the nodes in the tree
@@ -56,7 +76,16 @@ A scenario tree is described by the following:
 4. States of the nodes in the tree
 5. Probabilities of transition from one node to another.
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+The tree is also characterized by its _nodes_, _stages_, _height_,_leaves_ and the _root_ of the tree or the nodes.
+
+Each tree has stages starting from `0` where the root node is. 
+=======
+A scenario tree is a mutable struct of type `Tree()`. To create a non-optimal scenario tree, we need to fix the branching structure and the dimension of the states of nodes you are wroking on. This typs `Tree()` has different methods:
+=======
 A scenario tree is a mutable struct of type `Tree()`. To create a non-optimal scenario tree, we need to fix the branching structure and the dimension of the states of nodes you are working on. The type `Tree()` has different methods:
+>>>>>>> master
 ```julia
 julia> using Pkg
 julia> Pkg.add("ScenTrees")
@@ -69,7 +98,16 @@ children::Array{Array{Int64,1},1}, state::Array{Float64,2}, probability::Array{F
 [3] Tree(spec::Array{Int64,1})
 [4] Tree(spec::Array{Int64,1}, dimension)
 ```
+<<<<<<< HEAD
+<<<<<<< HEAD
+All the methods correspond to the way you can create a scenario tree. For the first method, the length of states must be equal to the length of the probabilities. In the 2nd method, you can call any of our predefined trees by just calling on the identifier (these identifiers are `0,301,302,303,304,305,306,307,401,402,4022,404,405`). And finaly the most important methods are the 3rd and 4th method. If you know the branching structure of your scenario tree, then you can create an non-optimal starting tree using it. If you don't state the dimension you ae working on, then it is defaulted into `1`. For example, `Tree([1,2,2,2,2])` creates a binary tree with states of dimension one as in Figure 1 above
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+All the methods correspond to the way you can create a scenario tree. For the first method, the length of states must be equal to the length of the probabilities. In the 2nd method, you can call any of our predefined trees by just calling on the identifier (these identifiers are `0,301,302,303,304,305,306,307,401,402,4022,404,405`). And finally the most important methods are the 3rd and 4th method. If you know the branching structure of your scenario tree, then you can create an non-optimal starting tree using it. If you don't state the dimension you are working on, then it is defaulted into `1`. For example, `Tree([1,2,2,2,2])` creates a binary tree with states of dimension one as in Figure 1 above
+>>>>>>> master
+=======
 All the methods correspond to the way you can create a scenario tree. For the first method, the length of states must be equal to the length of the probabilities. In the 2nd method, you can call any of our predefined trees by just calling on the identifier (these identifiers are `0, 301, 302, 303, 304, 305, 306, 307, 401, 402, 4022, 404, 405`). And finally the most important methods are the 3rd and 4th method. If you know the branching structure of your scenario tree, then you can create an non-optimal starting tree using it. If you don't state the dimension you are working on, then it is defaulted into `1`. For example, `Tree([1,2,2,2,2])` creates a binary tree with states of dimension one as in Figure 1 above
+>>>>>>> master
 
 ## Description of a scenario lattice
 
@@ -77,6 +115,66 @@ A scenario lattice differs from a scenario tree in that every node in stage `t` 
 
 Due to the above, we only describe a scenario lattice by:
 
+<<<<<<< HEAD
+1. Name of the lattice 
+2. States of the nodes of the lattice
+3. Probabilities of transition from one node to another in the lattice
+
+# Usage
+
+Since we have the basics of the scenario tree and the scenario lattice and since we created `ScenTrees.jl` 
+with an intention of being user-friendly, we will give an example of its usage and explain each part of it.
+
+```julia
+using ScenTrees
+
+ex1 = Tree([1,3,3,3,3]);
+sol1 = TreeApproximation!(ex1, GaussianSamplePath, 100000,2,2);
+
+treeplot(sol1)
+```
+In the above, we are creating a scenario tree with the branching structure `1x3x3x3x3` as `ex1`. 
+We want to approximate the Gaussian random walk with this tree.
+So, the tree approximation process takes 4 inputs:
+
+1. A tree
+2. The process to be approximated
+3. Sample size
+4. Which norm (default to Euclidean norm = 2)
+5. The value of `r` for process distance ( default to `r=2`)
+
+Those are basically the inputs that we are giving to the function _TreeApproximation!_. 
+What we obtain as a result of this is a valuated tree which can be visualized by the function _treeplot_ or _plotD_ if incase you were dealing with a 2-dimensional state space.
+
+![Stochastic approximation](../assets/exampleTree1.png)
+
+Just as easy as that! 
+
+It is more even simple for lattice approximation as in this we only take as inputs the branching structure of the lattice and the sample size as follows:
+
+```julia
+sol2 = LatticeApproximation([1,2,3,4,5], 500000)
+
+PlotLattice(sol2)
+```
+
+# Plotting
+
+As shown in the above, there are three different functions for plotting. We have _treeplot_, _plotD_ and _PlotLattice_ functions. 
+Each of these functions is special in its own way. Both _treeplot_ and _plotD_ are for plotting scenario trees while _PlotLattice_ is only for plotting lattice.
+In this package, we deal also with trees of 2D state space. So you can visualize them after approximation using _plotD_ function. 
+So the main difference between _treeplot_ and _plotD_ is that  _treeplot_ is for trees only in 1D state space while _plotD_ can be used for trees in 1D and 2D but specifically created for trees in 2D state space.
+
+!!! info
+	You need to install the [PyPlot.jl](https://github.com/JuliaPy/PyPlot.jl) package for this plots.
+
+You can save the plots using the the `Plots.jl` function `savefig`:
+```julia
+Plots.savefig("example1.pdf")
+```
+
+This ends the tutorial for this package.
+=======
 1. Name of the lattice
 2. States of the nodes of the lattice
 3. Probabilities of transition from one node to another in the lattice
@@ -111,4 +209,13 @@ Since we have the basics of the scenario tree and the scenario lattice and since
 
 All of the above functions have been documented in their respective scripts and the user can find out what each function does by putting a `?` before the function. For example, `?leaves` will give an explanation of what the function `leaves` does.
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+In the upcoming tutorials, we will have a look in detail on the functionalities of the main functions of this library.
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+In the upcoming tutorials, we will have a look in detail on the functionalities of the main functions of this package.
+>>>>>>> master
+=======
 In the upcoming tutorials, we will have a look in detail on what each function of this package does.
+>>>>>>> master

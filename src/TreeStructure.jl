@@ -1,20 +1,71 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+"""
+<<<<<<< HEAD
+=======
+	TreeStructure
+
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+This defines the tree structure.
+A tree has a name, a list of parents, a list of states, list of probabilities, and a list of children.
+Name - a string representing the name of the tree.
+List of parents - shows the parent of each node in the tree.
+List of states - contains the state of each node in the tree.
+List of probabilities - shows the conditional probability of moving from one node to another.
+List of children - contains the children of every parent node.
+"""
+=======
+>>>>>>> master
+
+>>>>>>> gh-pages
 using Distributions, Statistics, PyPlot, Random
 rng = MersenneTwister(01012019);
 
 #This defines the tree structure.
+<<<<<<< HEAD
+
+mutable struct Tree                                                                               #Tree structure
+<<<<<<< HEAD
+    name::String                                                                                       #name of the tree
+    parent::Vector{Int64}                                                                    # parents of nodes in the tree
+    children::Vector{Vector{Int64}}                                             # successor nodes of each parent
+    state::Matrix{Float64}                                                                 # states of nodes in the tree
+    probability::Matrix{Float64}                                                     #probability to go from one node to another
+<<<<<<< HEAD
+"""
+The following function will create an array for the children of each of the parent nodes.
+=======
+
+=======
+=======
 mutable struct Tree
+>>>>>>> master
     name::String                        # name of the tree
     parent::Vector{Int64}               # parents of nodes in the tree
     children::Vector{Vector{Int64}}     # successor nodes of each parent
     state::Matrix{Float64}              # states of nodes in the tree
     probability::Matrix{Float64}        # probability to go from one node to another
+>>>>>>> master
 
     """
     	child(parent::Vector{Int64})
 
+<<<<<<< HEAD
+This function will create an array for the children of each of the parent nodes.
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+We need this array fo children for performance purposes in the stochastic approximation step.
+So that instead of having it as a fucntion, we rather have it as an array so that we can only access the array
+"""
+=======
     Returns a vector of successors of each of the parent nodes.
     """
+<<<<<<< HEAD
+>>>>>>> master
+    function Children(parent::Vector{Int64})
+=======
     function child(parent::Vector{Int64})
+>>>>>>> master
         allchildren = Vector{Vector{Int64}}([])
         for node in unique(parent)
             push!(allchildren, [i for i = 1 : length(parent) if parent[i] == node])
@@ -23,16 +74,49 @@ mutable struct Tree
     end
     Tree(name::String,parent::Vector{Int64},
     children::Vector{Vector{Int64}},
+<<<<<<< HEAD
+<<<<<<< HEAD
+    state::Matrix{Float64},probability::Matrix{Float64})=new(name,parent,Children(parent),state,probability)
+<<<<<<< HEAD
+"""
+The following are some examples of predefined trees
+=======
+=======
+    state::Matrix{Float64}, probability::Matrix{Float64})=new(name, parent, Children(parent), state, probability)
+>>>>>>> master
+=======
     state::Matrix{Float64}, probability::Matrix{Float64})=new(name, parent, child(parent), state, probability)
+>>>>>>> master
 
     """
     	Tree(identifier::Int64)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+This returns some examples of predefirned trees.
+These are (0,302,303,304,305,306,307,402,404,405).
+You can call any of the above tree and plot to see the properties of the tree.
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+"""
+=======
+    Returns some examples of predefirned trees.
+=======
     Returns some examples of predefined trees.
+<<<<<<< HEAD
 
     - These are (0, 302, 303, 304, 305, 306, 307, 402, 404, 405).
     - You can call any of the above tree and plot to see the properties of the tree.
+=======
+<<<<<<< HEAD
+>>>>>>> master
+    These are (0,302,303,304,305,306,307,402,404,405).
+=======
+    These are (0, 302, 303, 304, 305, 306, 307, 402, 404, 405).
+>>>>>>> master
+    You can call any of the above tree and plot to see the properties of the tree.
+>>>>>>> gh-pages
     """
+>>>>>>> master
     function Tree(identifier::Int64)
         self= new()
         if identifier==0
@@ -89,12 +173,15 @@ mutable struct Tree
             self.children = child(self.parent)
             self.state = [10.0 12.0 8.0 15.0 11.0 9.0 5.0 18.0 16.0 13.0 11.0 10.0 7.0 6.0 3.0]'
             self.probability = [1.0 0.8 0.7 0.3 0.2 0.8 0.4 0.6 0.2 0.5 0.5 0.4 0.6 0.7 0.3]'
+<<<<<<< HEAD
+=======
         elseif identifier == 4022
             self.name = "Tree 1x2x2x2"
             self.parent = [0,1,1,2,2,3,3,4,4,5,5,6,6,7,7]
             self.children = child(self.parent)
             self.state = [10.0 0.0; 12.0 1.0; 8.0 -1.0; 15.0 2.0; 11.0 1.0; 9.0 -0.5; 5.0 -2.0; 18.0 3.0; 16.0 1.8; 13.0 0.9; 11.0 0.2; 10.0 0.0; 7.0 -1.2; 6.0 -2.0; 3.0 -3.2]
             self.probability = [1.0 0.8 0.7 0.3 0.2 0.8 0.4 0.6 0.2 0.5 0.5 0.4 0.6 0.7 0.3]'
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
         elseif identifier ==404
             self.name = "Tree 1x2x2x2"
             self.parent = [0,1,1,2,2,3,3,4,4,5,5,6,6,7,7]
@@ -110,10 +197,29 @@ mutable struct Tree
         end
         return self
     end
+<<<<<<< HEAD
+"""
+<<<<<<< HEAD
+Instead of having a predefined tree, we can just provide the topology of the tree and then using it, we produce the tree.
+Given the bushiness of the tree, the following function produces the tree.
+For example, bushiness = 1x2x3x3 means that we have 18 leaves at the end and at stage 1, we have 1 node, 
+stage 2 has 2x1 nodes, stage 3 has 3x2x1 nodes and stage 4 has 3x3x2x1 nodes.
+We generate normal random  variables for the states of the nodes of the tree.
+"""
+=======
+	Tree(spec::Vector{Int64}, dimension=Int64[])
+=======
+>>>>>>> master
 
     """
     	Tree(bstructure::Vector{Int64}, dimension=Int64[])
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+    Returns a tree according to the specified branching vector and the dimension. The branching vector must start with 1 for the root node.
+=======
     Returns a tree according to the specified branching vector and the dimension.
 
     Args:
@@ -122,8 +228,14 @@ mutable struct Tree
     - dimension - describes how many values (states) in each node.
 
     The branching vector must start with 1 for the root node.
+>>>>>>> master
     """
+<<<<<<< HEAD
+>>>>>>> master
+    function Tree(spec::Vector{Int64}, dimension=Int64[])
+=======
     function Tree(bstructure::Vector{Int64}, dimension=Int64[])
+>>>>>>> master
         self = new()
         if isempty(dimension)
             dimension = 1
@@ -154,14 +266,29 @@ mutable struct Tree
 end
 
 """
+<<<<<<< HEAD
+=======
 	stage(trr::Tree, node=Int64[])
 
+<<<<<<< HEAD
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+The stage function returns the stage of each node in the tree
+=======
 Returns the stage of each node in the tree.
+<<<<<<< HEAD
+>>>>>>> master
+=======
 
 Args:
+<<<<<<< HEAD
 
 - trr - an instance of a Tree.
 - node - the number of node in the scenario tree you want to know its stage.
+=======
+trr - an instance of a Tree.
+node - the number of node in the scenario tree you want to know its stage.
+>>>>>>> master
+>>>>>>> gh-pages
 """
 function stage(trr::Tree, node = Int64[])
     if isempty(node)
@@ -182,6 +309,11 @@ function stage(trr::Tree, node = Int64[])
 end
 
 """
+<<<<<<< HEAD
+The following function returns the height of the tree
+which is just the maximum number of the stages of each node
+"""
+=======
 	height(trr::Tree)
 
 Returns the height of the tree which is just the maximum number of the stages of each node.
@@ -190,11 +322,23 @@ Args:
 
 - trr - an instance of a Tree.
 """
+<<<<<<< HEAD
+
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+>>>>>>> master
 function height(trr::Tree)
     return maximum(stage(trr))
 end
 
 """
+<<<<<<< HEAD
+The following function produces the terminal nodes of the tree. 
+The terminal nodes or the leaves are all those nodes which doesn't have children nodes. 
+They are the nodes which are not parents.
+The function also returns the indexes (omegas) of these nodes as well as the conditional probabilities (prob) of reaching of the leaves from the root node
+"""
+=======
 	leaves(trr::Tree,node=Int64[])
 
 Returns the leaf nodes, their indexes and the conditional probabilities.
@@ -204,6 +348,11 @@ Args:
 - trr - an instance of a Tree.
 - node - a node in the tree you want to its children.
 """
+<<<<<<< HEAD
+
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+>>>>>>> master
 function leaves(trr::Tree, node = Int64[])
     nodes = 1 : length(trr.parent)
     leaves = setdiff(nodes, trr.parent)
@@ -233,6 +382,10 @@ function leaves(trr::Tree, node = Int64[])
 end
 
 """
+<<<<<<< HEAD
+This function gives the nodes in the tree, generally the range of the nodes in the tree
+"""
+=======
 	nodes(trr::Tree,t=Int64[])
 
 Returns the nodes in the tree, generally the range of the nodes in the tree.
@@ -244,6 +397,11 @@ Args:
 
 Example : nodes(trr,2) - gives all nodes at stage 2.
 """
+<<<<<<< HEAD
+
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+>>>>>>> master
 function nodes(trr::Tree, t = Int64[])
     nodes = 1 : length(trr.parent)
     if isempty(t) #if stage t is not given, return all nodes of the tree
@@ -253,6 +411,13 @@ function nodes(trr::Tree, t = Int64[])
         return Int64[i for i in nodes if stg[i] == t]
     end
 end
+<<<<<<< HEAD
+"""
+The root function provides the path from the starting node of the tree to the node indicated.
+If the node is not indicated, it will return the starting node (which we call the root node).
+Else, it will give a sequence of nodes from the root to the indicated node.
+"""
+=======
 
 """
 	root(trr::Tree,nodes=Int64[])
@@ -266,7 +431,16 @@ Args:
 If `nodes` is not specified, it returns the root of the tree.
 If `nodes` is specified, it returns a sequence of nodes from the root to the specified node.
 """
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+>>>>>>> master
+function root(trr::Tree,nodes = Int64[])
+=======
 function root(trr::Tree, nodes = Int64[])
+>>>>>>> master
     if isempty(nodes)
         nodes = trr.children[1]
     elseif isa(nodes , Int64)
@@ -286,13 +460,33 @@ function root(trr::Tree, nodes = Int64[])
 end
 
 """
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	partTree(trr::Tree)
+=======
 	part_tree(trr::Tree)
+>>>>>>> master
 
+<<<<<<< HEAD
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+Sometimes, we are dealing with 2D-state trees and at the end of the stochastic approximation step, we get an aproximated tree with
+states in higher dimension. So we can partition the tree into different trees with the same parents, children and probabilities but
+different states. The following function helps us to do so.
+=======
 Returns a vector of trees in d-dimension.
+<<<<<<< HEAD
+>>>>>>> master
+=======
 
 Args:
+<<<<<<< HEAD
 
 - trr - an instance of Tree.
+=======
+trr - an instance of Tree.
+>>>>>>> master
+>>>>>>> gh-pages
 """
 function part_tree(trr::Tree)
     trees = Tree[]
@@ -304,11 +498,28 @@ function part_tree(trr::Tree)
 end
 
 """
+<<<<<<< HEAD
+<<<<<<< HEAD
+In the stochastic approximation step, we only iterate over the probabilities of the leaves. The length of the array of probabilities we get at the 
+=======
+	buildProb!(trr::Tree,probabilities::Array{Float64,2})
+=======
 	build_probabilities!(trr::Tree,probabilities::Array{Float64,2})
+>>>>>>> master
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+In the stochastic approximation step, we only iterate over the probabilities of the leaves. The length of the array of probabilities we get at the
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+end is smaller than the length of the parents. So we have to build the probabilites for the remaining nodes.
+=======
+Returns the probabilities of the nodes without probabilities if the array of probabilities is less than the length of parents in the stochastic approximation procedure.
+>>>>>>> master
+=======
 Returns the probabilities of the nodes without probabilities
 if the array of probabilities is less than the length of parents
 in the stochastic approximation procedure.
+>>>>>>> master
 """
 function build_probabilities!(trr::Tree, probabilities::Array{Float64,2})
     leaf, omegas, probaLeaf = leaves(trr)
@@ -331,6 +542,8 @@ function build_probabilities!(trr::Tree, probabilities::Array{Float64,2})
     return trr.probability
 end
 
+<<<<<<< HEAD
+=======
 """
 	tree_plot(trr::Tree,fig=1)
 
@@ -345,7 +558,16 @@ Args:
 Using the matplotlib version, fig usually takes a tuple. For example, fig = (8,6) produces an image with length = 8 and width = 6.
 The user is not obliged to give this specifications as already there is a default value.
 """
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+>>>>>>> master
+function treeplot(trr::Tree, fig= 1)
+=======
 function tree_plot(trr::Tree, fig= 1)
+>>>>>>> master
     if !isempty(fig)
         figure(fig)
     end
@@ -353,11 +575,37 @@ function tree_plot(trr::Tree, fig= 1)
     trs = subplot2grid((1,4), (0,0), colspan=3)
     title("states")
     stg = stage(trr)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    xticks(range(1, stop = height(trr) + 1)) #Set the ticks on the x-axis
+    xlabel("stage, time")
+    trs.spines["top"].set_visible(false) #remove the box
+    trs.spines["right"].set_visible(false)
+=======
+    xticks(range(1, stop = height(trr) + 1))                                              #Set the ticks on the x-axis
+    xlabel("stage, time")
+    trs.spines["top"].set_visible(false)                                                       #remove the line of the box at the top
+    trs.spines["right"].set_visible(false)		                                       # remove the line of the box at the right
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+    xticks(1:height(trr)+1)         # Set the ticks on the x-axis
+    xlabel("stage,time",fontsize=12)
+    trs.spines["top"].set_visible(false)         # remove the line of the box at the top
+    trs.spines["right"].set_visible(false)		 # remove the line of the box at the right
+<<<<<<< HEAD
+>>>>>>> master
+    for i in range(1,stop = length(trr.parent))
+=======
+    for i =1:length(trr.parent)
+>>>>>>> master
+=======
     xticks(1 : height(trr) + 1)         # Set the ticks on the x-axis
     xlabel("stage,time",fontsize=12)
     trs.spines["top"].set_visible(false)         # remove the line of the box at the top
     trs.spines["right"].set_visible(false)		 # remove the line of the box at the right
     for i = 1 : length(trr.parent)
+>>>>>>> master
         if stg[i] > 0
             trs.plot([stg[i],stg[i]+1],[trr.state[trr.parent[i]],trr.state[i]],linewidth=1.5)
         end
@@ -371,11 +619,32 @@ function tree_plot(trr::Tree, fig= 1)
     (Yi,_,probYi) = leaves(trr)
     Yi = [trr.state[i] for i in Yi]
     nY = length(Yi)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    h = 1.05*std(Yi)/ (nY^0.2) + 1e-3 #Silverman rule of thumb
+    trs.set_ylim(minimum(Yi)-h, maximum(Yi)+h)
+    prs.set_ylim(minimum(Yi)-h, maximum(Yi)+h)
+    yticks(()) #remove the ticks on probability plot
+    t = LinRange(minimum(Yi)-h, maximum(Yi)+h, 100) #100 points on probability plot
+=======
+    h = 1.05*std(Yi)/ (nY^0.2) + 1e-3                                                           #Silverman rule of thumb
+    #trs.set_ylim(minimum(Yi)-h, maximum(Yi)+h)
+    #prs.set_ylim(minimum(Yi)-h, maximum(Yi)+h)
+    yticks(())                                                                                                             #remove the ticks on probability plot
+    t = LinRange(minimum(Yi)-h, maximum(Yi)+h, 100)                           #100 points on probability plot
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+    #density = zeros(length(collect(t)))
+=======
+    h = 1.05*std(Yi)/ (nY^0.2) + 1e-3         #Silverman rule of thumb
+=======
     h = 1.05 * std(Yi) / (nY^0.2) + 1e-3         #Silverman rule of thumb
+>>>>>>> master
     #trs.set_ylim(minimum(Yi)-h, maximum(Yi)+h)
     #prs.set_ylim(minimum(Yi)-h, maximum(Yi)+h)
     yticks(())                                                                                                             #remove the ticks on probability plot
     t = LinRange(minimum(Yi)-h, maximum(Yi)+h, 100)  #100 points on probability plot
+>>>>>>> master
     density = zero(t)
     for (i, ti) in enumerate(t)
         for (j, xj) in enumerate(Yi)
@@ -387,6 +656,15 @@ function tree_plot(trr::Tree, fig= 1)
     prs.fill_betweenx(t, 0 , density)
 end
 
+<<<<<<< HEAD
+function plotD(newtree::Tree)
+    fig = figure(1)
+    stg = stage(newtree)
+    for rw = 1:size(newtree.state,2)
+      ax = subplot(size(newtree.state,2),1,rw)
+      ax.spines["top"].set_visible(false) #remove the box top
+      ax.spines["right"].set_visible(false) #remove the box right
+=======
 """
 	plot_hd(newtree::Tree)
 
@@ -399,6 +677,7 @@ function plot_hd(newtree::Tree)
       ax = subplot(1,size(newtree.state,2),rw)
       ax.spines["top"].set_visible(false)                                                  #remove the box top
       ax.spines["right"].set_visible(false)                                               #remove the box right
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
       for i in range(1,stop = length(newtree.parent))
           if stg[i] > 0
               ax.plot([stg[i], stg[i]+1],[newtree.state[:,rw][newtree.parent[i]], newtree.state[:,rw][i]])
@@ -406,6 +685,59 @@ function plot_hd(newtree::Tree)
           xlabel("stage, time")
           ylabel("states")
       end
+<<<<<<< HEAD
+      #title("Stochastic Approximation Tree")
+      xticks(unique(stg))
+      #grid(true)
+    end
+end
+
+#Documentation for the differernt functions in the script
+                                                                        
+"""
+	Tree()
+Returns a tree with the name,parents of nodes, children of the parents, states of the nodes and probabilities of transition.
+Note that it takes a vector of integers
+Fox example, Tree([1,2,3,4])
+                                                                        
+"""
+
+"""
+	stage()
+Returns the stage of each node in the tree.
+                                                                        
+"""
+
+"""
+	height()
+Returns the height of the tree
+                                                                        
+"""
+
+"""
+	leaves()
+Returns the leaves of the tree and their unconditional probabilities
+                                                                        
+"""
+
+"""
+	nodes()
+Returns the nodes of the tree
+                                                                        
+"""
+
+"""
+	root()
+Returns the root (parent of all nodes) of the tree.
+It also returns a sequence of nodes to reach a specific node.
+For example;
+root(d,5)
+Returns a sequence of nodes to reach node 5 in tree d
+                                                                        
+"""
+                                                                        
+=======
       xticks(unique(stg))
     end
 end
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288

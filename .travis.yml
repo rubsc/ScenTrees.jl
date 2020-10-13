@@ -12,14 +12,69 @@ julia:
 after_success:
   - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder()); Coveralls.submit(process_folder())'
   
+<<<<<<< HEAD
+allow failures:
+  - julia: nightly
+  
+fast_finish: true
+
 branches:
  only:
    - master
+<<<<<<< HEAD
+    
+=======
+branches:
+ only:
+   - master
+<<<<<<< HEAD
+   
+matrix:
+  fast_finish: true
+  allow_failures:
+    - julia: nightly
+   
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+codecov: true
+=======
+   - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+ 
+#codecov: true
+>>>>>>> master
+
+=======
 codecov: true
 coveralls: true
+>>>>>>> master
 notifications:
   email: false  
 env:
+<<<<<<< HEAD
+ - PYTHON=""
+  
+# jobs:
+#     include:
+# 	- stage: "Documentation"
+script:
+#  - julia -e 'using Pkg; Pkg.clone(pwd())'
+  - julia -e 'using Pkg; Pkg.test("ScenTrees",coverage=true)'
+#  - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+#  - julia --project=docs/ -e 'using Pkg; Pkg.add("Documenter"); using Documenter; include("docs/make.jl")'
+      
+after_success:
+  - julia -e 'using Pkg; Pkg.add("Documenter")'
+  - julia --project=docs/ -e 'include("docs/make.jl")'
+  - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  on:
+    branch: master
+=======
   - PYTHON=""
 jobs:
   fast_finish: true
@@ -33,8 +88,34 @@ jobs:
         - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
         - julia --project=docs/ -e 'using Pkg; Pkg.add("Documenter"); using Documenter; include("docs/make.jl")'
       after_success: skip
+<<<<<<< HEAD
+       
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+after_success:
+  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+>>>>>>> e9b1bc9cdc5c989ee6e99a1505eeecf47d22e288
+=======
+# after_success:
+#   - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+#   - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+>>>>>>> master
+=======
+after_success:
+  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+>>>>>>> master
+=======
+#after_success:
+#  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+#  - julia -e 'using Pkg; cd(Pkg.dir("ScenTrees")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+>>>>>>> master
+=======
       
       
+<<<<<<< HEAD
 =======
   - osx
   
@@ -84,3 +165,6 @@ deploy:
   on:
     branch: master
 >>>>>>> Deploy kirui93/ScenTrees.jl to github.com/kirui93/ScenTrees.jl.git:gh-pages
+=======
+>>>>>>> master
+>>>>>>> gh-pages
