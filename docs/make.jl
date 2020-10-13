@@ -1,6 +1,5 @@
 using Documenter, ScenTrees
 
-<<<<<<< HEAD
 #const ASSETS = readdir(joinpath(@__DIR__, "src", "assets"))
 
 makedocs(
@@ -27,20 +26,4 @@ deploydocs(
 	deps = nothing,
 	make = nothing
 	#versions = ["stable" => "v^", "v#.#", "dev" => "master"]
-=======
-makedocs(
-	sitename =  "ScenTrees.jl",
-	authors = "Kipngeno Kirui",
-	clean = false,
-	doctest = true,
-	format = Documenter.HTML(
-		assets = ["exampleTree1.png"],
-		prettyurls = get(ENV, "CI", nothing) == "true"),
-	pages = [ "Home" => "index.md",
-			"Tutorials" => "tutorial/tutorial1.md"],
-)
-
-deploydocs(deps = Deps.pip("mkdocs","python-markdown-math"),
-	repo="github.com/kirui93/ScenTrees.jl.git"
->>>>>>> Deploy kirui93/ScenTrees.jl to github.com/kirui93/ScenTrees.jl.git:gh-pages
 )
