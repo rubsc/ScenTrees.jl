@@ -1,6 +1,5 @@
 using LinearAlgebra
-using Clp
-using MathProgBase
+using JuMP, Clp
 include("ontoSimplex.jl")
 
 
@@ -22,24 +21,30 @@ function Wasserstein(p1::Vector{Float64}, p2::Vector{Float64}, distMatrix::Array
     A= kron(ones(n2)', Matrix{Float64}(I, n1, n1))
     B= kron(Matrix{Float64}(I, n2, n2), ones(n1)')
 
-    x= linprog(vec(distMatrix.^rWasserstein), [A;B], '=', [p1;p2], ClpSolver())
-    return (distance= (x.objval)^(1/ rWasserstein), π= reshape(x.sol, (n1, n2)))
+	model = Model(Clp.Optimizer)
+	@variable(model, x[i=1:n1*n2] >= 0)
+	@objective(model, Min, vec(distMatrix.^rWasserstein)' * x)
+	@constraint(model, [A;B] * x .== [p1;p2])
+	optimize!(model)
+    return (distance= (objective_value(model))^(1/ rWasserstein), π= reshape(value.(x), (n1, n2)))
 end
 
 
 #	Sinkhorn-Knopp iteration algorithm
 function Sinkhorn(p1::Vector{Float64}, p2::Vector{Float64}, distMatrix::Array{Float64,2}, rWasserstein::Float64= 1., λ::Float64= 1.)
-	ontoSimplex!(p1); ontoSimplex!(p2)
-	r= p1; c= p2
-	K= exp.(-λ * (distMatrix.^ rWasserstein))
-	for i= 1:1000		# Sinkhorn iteration
-		c= c./ (p2'*c)		# rescale
-		r= p1./ (K* c)		# vector operation
-		c= p2./ (K'* r)		# vector operation
+	ontoSimplex!(p1); ontoSimplex!(p2); count= 0
+	βr= Array{Float64}(undef, length(p1));
+	γc= ones(size(p2))		# guess a starting value
+	distMatrix.^= rWasserstein; K= exp.(-λ * distMatrix)
+	while count < 1000		# Sinkhorn iteration
+		γc= γc./ (p2'*γc)		# rescale
+		βr= p1./ (K* γc)		# vector operation
+		γc= p2./ (K'* βr)		# vector operation
+		count += 1				# iteration count
 	end
-#	println("r=", r, p1'*r); println("c=", c, p2'*c)
-	π= Diagonal(r)*K*Diagonal(c)
-	return (distance= (sum(π.* (distMatrix.^rWasserstein))) ^(1/rWasserstein), π= π)
+#	println("r=", βr, p1'*βr); println("c=", γc, p2'*γc)
+	π= Diagonal(βr)*K*Diagonal(γc)
+	return (distance= (sum(π.* distMatrix)) ^(1/rWasserstein), π= π)
 end
 
 
