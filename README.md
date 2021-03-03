@@ -113,8 +113,10 @@ We ask that you please cite the following [paper](https://joss.theoj.org/papers/
 ```
 ## References
 
-+ Pflug, Georg Ch., and Alois Pichler, 2012. *A Distance for Multistage Stochastic Optimization Models*. SIAM Journal on Optimization 22(1) Doi: https://doi.org/10.1137/110825054
++ Pflug, Georg Ch. and Pichler, Alois. A Distance for Multistage Stochastic Optimization Models. *SIAM Journal on Optimization 22(1)*, 2012. doi: https://doi.org/10.1137/110825054
 
-+ Pflug, Georg Ch., and Alois Pichler,2015. *Dynamic Generation of Scenario Trees*. Computational Optimization and Applications 62(3): Doi: https://doi.org/10.1007/s10589-015-9758-0
++ Pflug, Georg Ch. and Pichler, Alois. Dynamic Generation of Scenario Trees. *Computational Optimization and Applications*, 62(3), 2015. doi: https://doi.org/10.1007/s10589-015-9758-0
 
-+ Pflug, Georg Ch., and Alois Pichler,2016. *From Empirical Observations to Tree Models for Stochastic Optimization : Convergence Properties : Convergence of the Smoothed Empirical Process in Nested Distance.* SIAM Journal on Optimization 26(3). Society for Industrial and Applied Mathematics (SIAM). Doi: https://doi.org/10.1137/15M1043376.
++ Pflug, Georg Ch. and Pichler, Alois: From Empirical Observations to Tree Models for Stochastic Optimization: Convergence Properties: Convergence of the Smoothed Empirical Process in Nested Distance. *SIAM Journal on Optimization 26(3). Society for Industrial and Applied Mathematics (SIAM)*, 2016. doi: https://doi.org/10.1137/15M1043376.
+
++ Kirui, B. Kipngeno, Pflug, Georg Ch. and Pichler, Alois: ScenTrees.jl: A Julia package for generating scenario trees and scenario lattices for multistage stochastic programming. *Journal of Open Source Software*, 5(46):1912, 2020. https://doi:10.21105/joss.01912.
