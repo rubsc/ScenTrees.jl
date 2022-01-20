@@ -29,6 +29,10 @@ function tree_approximation!(newtree::Tree, path::Function, nIterations::Int64, 
     path_to_leaves = [root(newtree, i) for i in leaf]         # all the paths from root to the leaves
     path_to_all_nodes = [root(newtree, j) for j in probaNode] # all paths to other nodes
     for k = 1 : nIterations
+	if (rem(k,10)==0)
+		print("Progress: $(round(k/nIterations*100,digits=2))%   \r")
+		flush(stdout)
+	end
         critical = max(0.0, 0.2 * sqrt(k) - 0.1 * n)
         #tmp = findall(xi -> xi <= critical, probaLeaf)
         tmp = Int64[inx for (inx, ppf) in enumerate(probaLeaf) if ppf <= critical]
